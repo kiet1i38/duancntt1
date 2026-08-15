@@ -1,0 +1,34 @@
+{
+  "method": "Selective Difficulty-Conditioned TokenSkip (SD-TokenSkip)",
+  "result_classification": "full-split proposed-method evaluation; not reproduced result",
+  "base_model": "D:\\kiet\\hk7\\duancntt\\test\\hf-cache\\hub\\models--Qwen--Qwen2.5-3B-Instruct\\snapshots\\aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "adapter": "D:\\kiet\\hk7\\duancntt\\test\\hf-cache\\hub\\models--hemingkx--TokenSkip-Qwen2.5-3B-Instruct-GSM8K\\snapshots\\e5d68b17146eff33722874f59d181aadc7428c91",
+  "calibration_dataset": "official TokenSkip GSM8K train subset",
+  "evaluation_dataset": "official TokenSkip GSM8K complete test split",
+  "calibration_n": 9,
+  "evaluation_n": 1319,
+  "candidate_ratios": [
+    0.5,
+    0.7,
+    0.9
+  ],
+  "max_new_tokens": 512,
+  "seed": 42,
+  "official_prompt": "TokenSkip/evaluation.py Qwen prompt",
+  "official_evaluator": "TokenSkip/data_processing + eval evaluator",
+  "difficulty_proxy": "input-only word/number/operator/clause score",
+  "thresholds": {
+    "easy_max": 43.0,
+    "medium_max": 62.0
+  },
+  "locked_policy": {
+    "easy": 0.5,
+    "medium": 1.0,
+    "hard": 1.0
+  },
+  "resume_files": [
+    "D:\\kiet\\hk7\\duancntt\\test\\full-sd-tokenskip-gsm8k-512\\calibration_rows.jsonl",
+    "D:\\kiet\\hk7\\duancntt\\test\\full-sd-tokenskip-gsm8k-512\\evaluation_rows.jsonl"
+  ],
+  "caveat": "Full GSM8K test split is evaluated, but this run uses 4-bit local inference and must still be distinguished from official repository and reproduced results until revisions, hashes and the complete paper protocol are independently pinned."
+}

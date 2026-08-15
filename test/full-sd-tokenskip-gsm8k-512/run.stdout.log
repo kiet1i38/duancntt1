@@ -1,0 +1,12 @@
+Resume state: calibration_done=0/9 evaluation_done=0/1319
+Loading Qwen2.5-3B + official TokenSkip adapter in 4-bit...
+Loaded on cuda:0
+[cal 1/9] train-2348 (easy)
+[cal 2/9] train-4189 (easy)
+[cal 3/9] train-7326 (easy)
+[cal 4/9] train-3990 (medium)
+[cal 5/9] train-5407 (medium)
+[cal 6/9] train-2011 (medium)
+[cal 7/9] train-3776 (hard)
+[cal 8/9] train-2129 (hard)
+[cal 9/9] train-1202 (hard)

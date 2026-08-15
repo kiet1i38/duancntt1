@@ -1,0 +1,122 @@
+Loading Qwen2.5-3B + official TokenSkip adapter in 4-bit...
+Loaded on cuda:0
+[cal 1/9] train-2348 (easy)
+[cal 2/9] train-4189 (easy)
+[cal 3/9] train-7326 (easy)
+[cal 4/9] train-3990 (medium)
+[cal 5/9] train-5407 (medium)
+[cal 6/9] train-2011 (medium)
+[cal 7/9] train-3776 (hard)
+[cal 8/9] train-2129 (hard)
+[cal 9/9] train-1202 (hard)
+[eval 1/27] gsm8k-test-10 (hard)
+[eval 2/27] gsm8k-test-103 (hard)
+[eval 3/27] gsm8k-test-136 (easy)
+[eval 4/27] gsm8k-test-140 (easy)
+[eval 5/27] gsm8k-test-145 (easy)
+[eval 6/27] gsm8k-test-190 (easy)
+[eval 7/27] gsm8k-test-200 (medium)
+[eval 8/27] gsm8k-test-201 (hard)
+[eval 9/27] gsm8k-test-254 (medium)
+[eval 10/27] gsm8k-test-262 (easy)
+[eval 11/27] gsm8k-test-385 (hard)
+[eval 12/27] gsm8k-test-476 (medium)
+[eval 13/27] gsm8k-test-480 (medium)
+[eval 14/27] gsm8k-test-544 (easy)
+[eval 15/27] gsm8k-test-573 (medium)
+[eval 16/27] gsm8k-test-637 (easy)
+[eval 17/27] gsm8k-test-639 (medium)
+[eval 18/27] gsm8k-test-648 (hard)
+[eval 19/27] gsm8k-test-729 (hard)
+[eval 20/27] gsm8k-test-804 (hard)
+[eval 21/27] gsm8k-test-905 (easy)
+[eval 22/27] gsm8k-test-996 (medium)
+[eval 23/27] gsm8k-test-1008 (easy)
+[eval 24/27] gsm8k-test-1023 (medium)
+[eval 25/27] gsm8k-test-1199 (hard)
+[eval 26/27] gsm8k-test-1216 (hard)
+[eval 27/27] gsm8k-test-1266 (medium)
+{
+  "pilot_only": true,
+  "method": "Selective Difficulty-Conditioned TokenSkip (SD-TokenSkip)",
+  "base_model": "D:\\kiet\\hk7\\duancntt\\test\\hf-cache\\hub\\models--Qwen--Qwen2.5-3B-Instruct\\snapshots\\aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "adapter": "D:\\kiet\\hk7\\duancntt\\test\\hf-cache\\hub\\models--hemingkx--TokenSkip-Qwen2.5-3B-Instruct-GSM8K\\snapshots\\e5d68b17146eff33722874f59d181aadc7428c91",
+  "calibration_dataset": "official TokenSkip GSM8K train subset",
+  "evaluation_dataset": "official TokenSkip GSM8K test subset",
+  "official_prompt": "TokenSkip/evaluation.py Qwen prompt",
+  "official_evaluator": "TokenSkip/data_processing + eval evaluator",
+  "calibration_n": 9,
+  "evaluation_n": 27,
+  "evaluation_selection": "declared input-complexity-stratified official ids",
+  "candidate_ratios": [
+    0.5,
+    0.7,
+    0.9
+  ],
+  "max_new_tokens": 512,
+  "difficulty_proxy": "input-only word/number/operator/clause score",
+  "thresholds": {
+    "easy_max": 43.0,
+    "medium_max": 62.0
+  },
+  "policy": {
+    "easy": {
+      "ratio": 0.5,
+      "rule": "compressed only for easy inputs; medium/hard fall back to Full-CoT",
+      "locked_before_evaluation": true
+    },
+    "medium": {
+      "ratio": 1.0,
+      "rule": "compressed only for easy inputs; medium/hard fall back to Full-CoT",
+      "locked_before_evaluation": true
+    },
+    "hard": {
+      "ratio": 1.0,
+      "rule": "compressed only for easy inputs; medium/hard fall back to Full-CoT",
+      "locked_before_evaluation": true
+    }
+  },
+  "summaries": {
+    "full": {
+      "n": 27,
+      "correct": 26,
+      "accuracy": 0.963,
+      "avg_reasoning_tokens": 297.67,
+      "total_latency_s": 356.681,
+      "tokens_per_correct": 309.12
+    },
+    "ratio_0.5": {
+      "n": 27,
+      "correct": 23,
+      "accuracy": 0.8519,
+      "avg_reasoning_tokens": 166.96,
+      "total_latency_s": 413.126,
+      "tokens_per_correct": 196.0
+    },
+    "ratio_0.7": {
+      "n": 27,
+      "correct": 23,
+      "accuracy": 0.8519,
+      "avg_reasoning_tokens": 205.44,
+      "total_latency_s": 497.944,
+      "tokens_per_correct": 241.17
+    },
+    "ratio_0.9": {
+      "n": 27,
+      "correct": 26,
+      "accuracy": 0.963,
+      "avg_reasoning_tokens": 216.59,
+      "total_latency_s": 518.651,
+      "tokens_per_correct": 224.92
+    },
+    "sd_tokenskip": {
+      "n": 27,
+      "correct": 26,
+      "accuracy": 0.963,
+      "avg_reasoning_tokens": 253.56,
+      "total_latency_s": 362.087,
+      "tokens_per_correct": 263.31
+    }
+  },
+  "caveat": "Not an official reproduction; 4-bit inference-only pilot, finite evaluation subset, heuristic difficulty proxy, and no confidence interval. The model, official adapter, prompt, evaluator, and GSM8K files are held constant. This conservative policy is an empirical baseline/extension and must not be described as a guaranteed novel method."
+}

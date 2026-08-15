@@ -1,0 +1,84 @@
+{
+  "pilot_only": true,
+  "method": "Selective Difficulty-Conditioned TokenSkip (SD-TokenSkip)",
+  "base_model": "D:\\kiet\\hk7\\duancntt\\test\\hf-cache\\hub\\models--Qwen--Qwen2.5-3B-Instruct\\snapshots\\aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "adapter": "D:\\kiet\\hk7\\duancntt\\test\\hf-cache\\hub\\models--hemingkx--TokenSkip-Qwen2.5-3B-Instruct-GSM8K\\snapshots\\e5d68b17146eff33722874f59d181aadc7428c91",
+  "calibration_dataset": "official TokenSkip GSM8K train subset",
+  "evaluation_dataset": "official TokenSkip GSM8K test subset",
+  "official_prompt": "TokenSkip/evaluation.py Qwen prompt",
+  "official_evaluator": "TokenSkip/data_processing + eval evaluator",
+  "calibration_n": 9,
+  "evaluation_n": 27,
+  "evaluation_selection": "declared input-complexity-stratified official ids",
+  "candidate_ratios": [
+    0.5,
+    0.7,
+    0.9
+  ],
+  "max_new_tokens": 512,
+  "difficulty_proxy": "input-only word/number/operator/clause score",
+  "thresholds": {
+    "easy_max": 43.0,
+    "medium_max": 62.0
+  },
+  "policy": {
+    "easy": {
+      "ratio": 0.5,
+      "rule": "compressed only for easy inputs; medium/hard fall back to Full-CoT",
+      "locked_before_evaluation": true
+    },
+    "medium": {
+      "ratio": 1.0,
+      "rule": "compressed only for easy inputs; medium/hard fall back to Full-CoT",
+      "locked_before_evaluation": true
+    },
+    "hard": {
+      "ratio": 1.0,
+      "rule": "compressed only for easy inputs; medium/hard fall back to Full-CoT",
+      "locked_before_evaluation": true
+    }
+  },
+  "summaries": {
+    "full": {
+      "n": 27,
+      "correct": 26,
+      "accuracy": 0.963,
+      "avg_reasoning_tokens": 297.67,
+      "total_latency_s": 356.681,
+      "tokens_per_correct": 309.12
+    },
+    "ratio_0.5": {
+      "n": 27,
+      "correct": 23,
+      "accuracy": 0.8519,
+      "avg_reasoning_tokens": 166.96,
+      "total_latency_s": 413.126,
+      "tokens_per_correct": 196.0
+    },
+    "ratio_0.7": {
+      "n": 27,
+      "correct": 23,
+      "accuracy": 0.8519,
+      "avg_reasoning_tokens": 205.44,
+      "total_latency_s": 497.944,
+      "tokens_per_correct": 241.17
+    },
+    "ratio_0.9": {
+      "n": 27,
+      "correct": 26,
+      "accuracy": 0.963,
+      "avg_reasoning_tokens": 216.59,
+      "total_latency_s": 518.651,
+      "tokens_per_correct": 224.92
+    },
+    "sd_tokenskip": {
+      "n": 27,
+      "correct": 26,
+      "accuracy": 0.963,
+      "avg_reasoning_tokens": 253.56,
+      "total_latency_s": 362.087,
+      "tokens_per_correct": 263.31
+    }
+  },
+  "caveat": "Not an official reproduction; 4-bit inference-only pilot, finite evaluation subset, heuristic difficulty proxy, and no confidence interval. The model, official adapter, prompt, evaluator, and GSM8K files are held constant. This conservative policy is an empirical baseline/extension and must not be described as a guaranteed novel method."
+}

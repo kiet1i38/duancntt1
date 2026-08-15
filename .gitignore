@@ -1,0 +1,19 @@
+# Local Python environments and caches
+.venv/
+**/.venv/
+__pycache__/
+**/__pycache__/
+
+# Hugging Face/model caches (download on each machine)
+hf-cache/
+**/hf-cache/
+.cache/
+**/.cache/
+
+# Local browser/profile artifacts
+chrome-html-check-profile/
+**/chrome-html-check-profile/
+
+# Generated full-run logs/results can be large; keep explicit JSONL resume files tracked.
+*.pyc
+*.pyo
