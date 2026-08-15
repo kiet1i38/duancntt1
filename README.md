@@ -2,6 +2,8 @@
 
 Repository này lưu phần chạy thực nghiệm cần thiết cho đề tài Adaptive Compression of Chain-of-Thought.
 
+Hướng dẫn đầy đủ dạng HTML: [HUONG-DAN-CHAY-SD-TOKENSKIP.html](./HUONG-DAN-CHAY-SD-TOKENSKIP.html)
+
 Phương pháp đang chạy là **Selective Difficulty-Conditioned TokenSkip (SD-TokenSkip)** trên:
 
 - Base model: `Qwen/Qwen2.5-3B-Instruct`
