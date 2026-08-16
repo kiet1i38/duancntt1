@@ -124,25 +124,34 @@ def model_device(model: torch.nn.Module) -> torch.device:
     return torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
-def load_model(base_model: str, adapter_path: str):
+def load_model(base_model: str, adapter_path: str, use_4bit: bool = True):
     tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "left"
-    quantization = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.float16,
-        bnb_4bit_use_double_quant=True,
-    )
-    base = AutoModelForCausalLM.from_pretrained(
-        base_model,
-        quantization_config=quantization,
-        device_map="auto",
-        torch_dtype=torch.float16,
-        low_cpu_mem_usage=True,
-        trust_remote_code=True,
-    )
+    if use_4bit:
+        quantization = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.float16,
+            bnb_4bit_use_double_quant=True,
+        )
+        base = AutoModelForCausalLM.from_pretrained(
+            base_model,
+            quantization_config=quantization,
+            device_map="auto",
+            torch_dtype=torch.float16,
+            low_cpu_mem_usage=True,
+            trust_remote_code=True,
+        )
+    else:
+        base = AutoModelForCausalLM.from_pretrained(
+            base_model,
+            device_map="auto",
+            torch_dtype=torch.float16,
+            low_cpu_mem_usage=True,
+            trust_remote_code=True,
+        )
     model = PeftModel.from_pretrained(base, adapter_path, is_trainable=False)
     model.eval()
     return model, tokenizer
