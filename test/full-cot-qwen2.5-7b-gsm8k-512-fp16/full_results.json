@@ -1,0 +1,19 @@
+{
+  "method": "Full-CoT baseline",
+  "result_classification": "Fresh inference; not the paper's reported number",
+  "base_model": "Qwen/Qwen2.5-7B-Instruct",
+  "adapter": "hemingkx/TokenSkip-Qwen2.5-7B-Instruct-GSM8K",
+  "precision": "fp16",
+  "compression_ratio": 1.0,
+  "calibration_n": 9,
+  "evaluation_n": 1319,
+  "summary": {
+    "n": 1319,
+    "correct": 1208,
+    "accuracy": 0.915845,
+    "avg_reasoning_tokens": 298.978014,
+    "total_latency_s": 2114.559231,
+    "tokens_per_correct": 326.450331
+  },
+  "caveat": "The TokenSkip adapter is loaded but disabled for Full-CoT. This is a fresh same-dataset comparison baseline, not a paper-reported number."
+}

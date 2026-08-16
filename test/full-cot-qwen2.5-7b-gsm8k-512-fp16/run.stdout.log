@@ -1,0 +1,37 @@
+Loading Qwen/Qwen2.5-7B-Instruct + TokenSkip adapter in fp16; Full-CoT...
+/usr/local/lib/python3.12/dist-packages/torch/library.py:357: UserWarning: Warning only once for all operators,  other operators may also be overridden.
+  Overriding a previously registered kernel for the same operator and the same dispatch key
+  operator: flash_attn::_flash_attn_backward(Tensor dout, Tensor q, Tensor k, Tensor v, Tensor out, Tensor softmax_lse, Tensor(a6!)? dq, Tensor(a7!)? dk, Tensor(a8!)? dv, float dropout_p, float softmax_scale, bool causal, SymInt window_size_left, SymInt window_size_right, float softcap, Tensor? alibi_slopes, bool deterministic, Tensor? rng_state=None) -> Tensor
+    registered at /usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py:926
+  dispatch key: ADInplaceOrView
+  previous kernel: no debug info
+       new kernel: registered at /usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py:926 (Triggered internally at /opt/pytorch/pytorch/aten/src/ATen/core/dispatch/OperatorEntry.cpp:208.)
+  self.m.impl(
+Downloading shards:   0%|                                | 0/4 [00:00<?, ?it/s]Downloading shards:  25%|██████                  | 1/4 [01:32<04:37, 92.52s/it]Downloading shards:  50%|████████████            | 2/4 [03:00<02:59, 89.74s/it]Downloading shards:  75%|██████████████████      | 3/4 [04:28<01:28, 88.92s/it]Downloading shards: 100%|████████████████████████| 4/4 [05:48<00:00, 85.67s/it]Downloading shards: 100%|████████████████████████| 4/4 [05:48<00:00, 87.24s/it]
+Loading checkpoint shards:   0%|                         | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|████▎            | 1/4 [00:02<00:06,  2.10s/it]Loading checkpoint shards:  50%|████████▌        | 2/4 [00:03<00:03,  1.84s/it]Loading checkpoint shards:  75%|████████████▊    | 3/4 [00:05<00:01,  1.76s/it]Loading checkpoint shards: 100%|█████████████████| 4/4 [00:06<00:00,  1.63s/it]Loading checkpoint shards: 100%|█████████████████| 4/4 [00:06<00:00,  1.71s/it]
+No prebuilt binary for CUDA 13.1, loading CUDA 13.0 instead. Set BNB_CUDA_VERSION to override.
+/usr/local/lib/python3.12/dist-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.7` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/transformers/generation/configuration_utils.py:633: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.8` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/transformers/generation/configuration_utils.py:650: UserWarning: `do_sample` is set to `False`. However, `top_k` is set to `20` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_k`.
+  warnings.warn(
+{
+  "method": "Full-CoT baseline",
+  "result_classification": "Fresh inference; not the paper's reported number",
+  "base_model": "Qwen/Qwen2.5-7B-Instruct",
+  "adapter": "hemingkx/TokenSkip-Qwen2.5-7B-Instruct-GSM8K",
+  "precision": "fp16",
+  "compression_ratio": 1.0,
+  "calibration_n": 9,
+  "evaluation_n": 1319,
+  "summary": {
+    "n": 1319,
+    "correct": 1208,
+    "accuracy": 0.915845,
+    "avg_reasoning_tokens": 298.978014,
+    "total_latency_s": 2114.559231,
+    "tokens_per_correct": 326.450331
+  },
+  "caveat": "The TokenSkip adapter is loaded but disabled for Full-CoT. This is a fresh same-dataset comparison baseline, not a paper-reported number."
+}

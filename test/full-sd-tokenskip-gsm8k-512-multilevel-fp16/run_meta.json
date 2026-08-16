@@ -1,0 +1,159 @@
+{
+  "method": "Multi-Level Selective Difficulty-Conditioned TokenSkip",
+  "result_classification": "Extension result; fresh inference for selected modes",
+  "base_model": "Qwen/Qwen2.5-3B-Instruct",
+  "adapter": "hemingkx/TokenSkip-Qwen2.5-3B-Instruct-GSM8K",
+  "precision": "fp16",
+  "calibration_n": 9,
+  "evaluation_n": 1319,
+  "candidate_ratios": [
+    0.5,
+    0.7,
+    0.8,
+    1.0
+  ],
+  "calibration_accuracy_tolerance": 0.02,
+  "difficulty_boundaries": {
+    "easy_max": 43.0,
+    "medium_max": 62.0
+  },
+  "policy": {
+    "easy": 1.0,
+    "medium": 0.5,
+    "hard": 1.0
+  },
+  "selected_counts": {
+    "0.5": 475,
+    "1.0": 844
+  },
+  "calibration_candidate_summaries": {
+    "easy": {
+      "0.5": {
+        "n": 3,
+        "correct": 2,
+        "accuracy": 0.666667,
+        "avg_reasoning_tokens": 153.333333,
+        "total_latency_s": 11.521884,
+        "tokens_per_correct": 230.0
+      },
+      "0.7": {
+        "n": 3,
+        "correct": 2,
+        "accuracy": 0.666667,
+        "avg_reasoning_tokens": 183.333333,
+        "total_latency_s": 14.624403,
+        "tokens_per_correct": 275.0
+      },
+      "0.8": {
+        "n": 3,
+        "correct": 2,
+        "accuracy": 0.666667,
+        "avg_reasoning_tokens": 219.0,
+        "total_latency_s": 16.965189,
+        "tokens_per_correct": 328.5
+      },
+      "1.0": {
+        "n": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "avg_reasoning_tokens": 228.666667,
+        "total_latency_s": 8.649378,
+        "tokens_per_correct": 228.666667
+      }
+    },
+    "medium": {
+      "0.5": {
+        "n": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "avg_reasoning_tokens": 187.666667,
+        "total_latency_s": 11.521884,
+        "tokens_per_correct": 187.666667
+      },
+      "0.7": {
+        "n": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "avg_reasoning_tokens": 217.0,
+        "total_latency_s": 14.624403,
+        "tokens_per_correct": 217.0
+      },
+      "0.8": {
+        "n": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "avg_reasoning_tokens": 283.666667,
+        "total_latency_s": 16.965189,
+        "tokens_per_correct": 283.666667
+      },
+      "1.0": {
+        "n": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "avg_reasoning_tokens": 365.666667,
+        "total_latency_s": 8.649378,
+        "tokens_per_correct": 365.666667
+      }
+    },
+    "hard": {
+      "0.5": {
+        "n": 3,
+        "correct": 2,
+        "accuracy": 0.666667,
+        "avg_reasoning_tokens": 232.0,
+        "total_latency_s": 11.521884,
+        "tokens_per_correct": 348.0
+      },
+      "0.7": {
+        "n": 3,
+        "correct": 2,
+        "accuracy": 0.666667,
+        "avg_reasoning_tokens": 317.333333,
+        "total_latency_s": 14.624403,
+        "tokens_per_correct": 476.0
+      },
+      "0.8": {
+        "n": 3,
+        "correct": 1,
+        "accuracy": 0.333333,
+        "avg_reasoning_tokens": 372.666667,
+        "total_latency_s": 16.965189,
+        "tokens_per_correct": 1118.0
+      },
+      "1.0": {
+        "n": 3,
+        "correct": 1,
+        "accuracy": 0.333333,
+        "avg_reasoning_tokens": 462.333333,
+        "total_latency_s": 8.649378,
+        "tokens_per_correct": 1387.0
+      }
+    }
+  },
+  "baseline_source": "test/full-sd-tokenskip-gsm8k-512-original-ratio-gate-fp16/evaluation_rows.jsonl",
+  "baseline_full": {
+    "n": 1319,
+    "correct": 1101,
+    "accuracy": 0.834723,
+    "avg_reasoning_tokens": 316.920394,
+    "total_latency_s": 1113.195018,
+    "tokens_per_correct": 379.671208
+  },
+  "multilevel_method": {
+    "n": 1319,
+    "correct": 1059,
+    "accuracy": 0.802881,
+    "avg_reasoning_tokens": 265.347991,
+    "total_latency_s": 1080.570016,
+    "tokens_per_correct": 330.494806
+  },
+  "comparison_vs_full": {
+    "accuracy_loss_pp_vs_full": 3.1842,
+    "reasoning_token_reduction_pct_vs_full": 16.272983,
+    "latency_delta_pct_vs_full": -2.930754
+  },
+  "caveat": "Policy is selected from calibration rows only; hard rows are forced to Full-CoT. This is an empirical extension and not the paper's reported result.",
+  "max_new_tokens": 512,
+  "batch_size_requested": 288,
+  "eos_trim": true
+}

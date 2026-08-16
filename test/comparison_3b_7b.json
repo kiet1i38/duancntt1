@@ -1,0 +1,155 @@
+{
+  "classification": "Fresh inference comparison; not paper-reported and not claimed as official reproduction.",
+  "artifact_checks": {
+    "3b_multilevel_sd": {
+      "evaluation_rows": 1319,
+      "unique_ids": 1319,
+      "duplicate_ids": 0,
+      "files_present": {
+        "calibration_rows.jsonl": true,
+        "evaluation_rows.jsonl": true,
+        "full_results.json": true,
+        "run_meta.json": true,
+        "run.stdout.log": true
+      },
+      "all_required_files_present": true
+    },
+    "3b_full_cot_reference": {
+      "evaluation_rows": 1319,
+      "unique_ids": 1319,
+      "duplicate_ids": 0,
+      "files_present": {
+        "calibration_rows.jsonl": true,
+        "evaluation_rows.jsonl": true,
+        "full_results.json": true,
+        "run_meta.json": true,
+        "run.stdout.log": true
+      },
+      "all_required_files_present": true
+    },
+    "7b_full_cot": {
+      "evaluation_rows": 1319,
+      "unique_ids": 1319,
+      "duplicate_ids": 0,
+      "files_present": {
+        "calibration_rows.jsonl": true,
+        "evaluation_rows.jsonl": true,
+        "full_results.json": true,
+        "run_meta.json": true,
+        "run.stdout.log": true
+      },
+      "all_required_files_present": true
+    },
+    "3b_previous_gate": {
+      "evaluation_rows": 1319,
+      "unique_ids": 1319,
+      "duplicate_ids": 0,
+      "files_present": {
+        "calibration_rows.jsonl": true,
+        "evaluation_rows.jsonl": true,
+        "full_results.json": true,
+        "run_meta.json": true,
+        "run.stdout.log": true
+      },
+      "all_required_files_present": true
+    }
+  },
+  "runs": {
+    "3b_multilevel_sd": {
+      "path": "test\\full-sd-tokenskip-gsm8k-512-multilevel-fp16",
+      "result_classification": "Extension result; fresh inference for selected modes",
+      "base_model": "Qwen/Qwen2.5-3B-Instruct",
+      "precision": "fp16",
+      "policy": {
+        "easy": 1.0,
+        "medium": 0.5,
+        "hard": 1.0
+      },
+      "selected_counts": {
+        "0.5": 475,
+        "1.0": 844
+      },
+      "summary": {
+        "n": 1319,
+        "correct": 1059,
+        "accuracy": 0.802881,
+        "avg_reasoning_tokens": 265.347991,
+        "total_latency_s": 1080.570016,
+        "tokens_per_correct": 330.494806
+      }
+    },
+    "3b_full_cot_reference": {
+      "path": "test\\full-sd-tokenskip-gsm8k-512-original-ratio-gate-fp16",
+      "result_classification": "Extension result; fresh inference",
+      "base_model": "Qwen/Qwen2.5-3B-Instruct",
+      "precision": "fp16",
+      "summary": {
+        "n": 1319,
+        "correct": 1101,
+        "accuracy": 0.834723,
+        "avg_reasoning_tokens": 316.920394,
+        "total_latency_s": 1113.195018,
+        "tokens_per_correct": 379.671208
+      }
+    },
+    "7b_full_cot": {
+      "path": "test\\full-cot-qwen2.5-7b-gsm8k-512-fp16",
+      "result_classification": "Fresh inference; not the paper's reported number",
+      "base_model": "Qwen/Qwen2.5-7B-Instruct",
+      "precision": "fp16",
+      "summary": {
+        "n": 1319,
+        "correct": 1208,
+        "accuracy": 0.915845,
+        "avg_reasoning_tokens": 298.978014,
+        "total_latency_s": 2114.559231,
+        "tokens_per_correct": 326.450331
+      }
+    },
+    "3b_previous_gate": {
+      "path": "test\\full-sd-tokenskip-gsm8k-512-original-ratio-gate-fp16",
+      "result_classification": "Extension result; fresh inference",
+      "base_model": "Qwen/Qwen2.5-3B-Instruct",
+      "precision": "fp16",
+      "summary": {
+        "n": 1319,
+        "correct": 1076,
+        "accuracy": 0.81577,
+        "avg_reasoning_tokens": 280.69674,
+        "total_latency_s": 1095.655628,
+        "tokens_per_correct": 344.08829
+      },
+      "comparison_vs_full": {
+        "accuracy_loss_pp_vs_full": 1.8953,
+        "reasoning_token_reduction_pct_vs_full": 11.42989,
+        "latency_delta_pct_vs_full": -1.57559
+      }
+    }
+  },
+  "comparisons": {
+    "3b_multilevel_vs_3b_full": {
+      "accuracy_loss_pp_vs_full": 3.1842,
+      "reasoning_token_reduction_pct_vs_full": 16.272983,
+      "latency_delta_pct_vs_full": -2.930754
+    },
+    "3b_previous_gate_vs_3b_full": {
+      "accuracy_loss_pp_vs_full": 1.8953,
+      "reasoning_token_reduction_pct_vs_full": 11.42989,
+      "latency_delta_pct_vs_full": -1.57559
+    },
+    "7b_full_vs_3b_full_descriptive_only": {
+      "accuracy_delta_pp": 8.1122,
+      "avg_reasoning_tokens_delta_pct": -5.661479,
+      "latency_delta_pct": 89.954069,
+      "note": "Different model sizes; descriptive only, not a compression ablation."
+    }
+  },
+  "illustrative_20pct_tokens_2pp_accuracy_check": {
+    "target_token_reduction_pct": 20.0,
+    "maximum_accuracy_loss_pp": 2.0,
+    "3b_multilevel_token_reduction_pct": 16.272983,
+    "3b_multilevel_accuracy_loss_pp": 3.1842,
+    "passes": false,
+    "note": "This is a diagnostic against the teacher's earlier example, not a claim that the example is a mandatory threshold."
+  }
+}
