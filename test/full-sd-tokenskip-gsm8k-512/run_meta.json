@@ -1,8 +1,8 @@
 {
   "method": "Selective Difficulty-Conditioned TokenSkip (SD-TokenSkip)",
   "result_classification": "full-split proposed-method evaluation; not reproduced result",
-  "base_model": "D:\\kiet\\hk7\\duancntt\\test\\hf-cache\\hub\\models--Qwen--Qwen2.5-3B-Instruct\\snapshots\\aa8e72537993ba99e69dfaafa59ed015b17504d1",
-  "adapter": "D:\\kiet\\hk7\\duancntt\\test\\hf-cache\\hub\\models--hemingkx--TokenSkip-Qwen2.5-3B-Instruct-GSM8K\\snapshots\\e5d68b17146eff33722874f59d181aadc7428c91",
+  "base_model": "Qwen/Qwen2.5-3B-Instruct",
+  "adapter": "hemingkx/TokenSkip-Qwen2.5-3B-Instruct-GSM8K",
   "calibration_dataset": "official TokenSkip GSM8K train subset",
   "evaluation_dataset": "official TokenSkip GSM8K complete test split",
   "calibration_n": 9,
@@ -26,9 +26,10 @@
     "medium": 1.0,
     "hard": 1.0
   },
+  "batch_size_requested": 288,
   "resume_files": [
-    "D:\\kiet\\hk7\\duancntt\\test\\full-sd-tokenskip-gsm8k-512\\calibration_rows.jsonl",
-    "D:\\kiet\\hk7\\duancntt\\test\\full-sd-tokenskip-gsm8k-512\\evaluation_rows.jsonl"
+    "test/full-sd-tokenskip-gsm8k-512/calibration_rows.jsonl",
+    "test/full-sd-tokenskip-gsm8k-512/evaluation_rows.jsonl"
   ],
   "caveat": "Full GSM8K test split is evaluated, but this run uses 4-bit local inference and must still be distinguished from official repository and reproduced results until revisions, hashes and the complete paper protocol are independently pinned."
 }

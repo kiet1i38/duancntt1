@@ -128,6 +128,7 @@ def load_model(base_model: str, adapter_path: str):
     tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "left"
     quantization = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
@@ -203,6 +204,84 @@ def generate_one(
         "reasoning_tokens": cot_length,
         "latency_s": round(elapsed, 4),
     }
+
+
+def generate_batch(
+    model,
+    tokenizer,
+    questions: list[str],
+    ratio: float,
+    max_new_tokens: int,
+    extract_answer,
+    evaluate_answer,
+    gold_answers: list[str],
+) -> list[dict]:
+    """Generate a fixed TokenSkip ratio for several rows at once.
+
+    The prompt, ratio, evaluator, and decoding settings are unchanged from
+    ``generate_one``.  Latency is recorded as amortized wall time per row and
+    the full batch wall time is retained as ``batch_latency_s``.
+    """
+    if not questions:
+        return []
+    if len(questions) != len(gold_answers):
+        raise ValueError("questions and gold_answers must have the same length")
+
+    prompts = [official_qwen_prompt(question, ratio) for question in questions]
+    encoded = tokenizer(prompts, return_tensors="pt", padding=True)
+    device = model_device(model)
+    encoded = {key: value.to(device) for key, value in encoded.items()}
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+    started = time.perf_counter()
+    with torch.inference_mode():
+        if ratio >= 1.0:
+            with model.disable_adapter():
+                generated = model.generate(
+                    **encoded,
+                    max_new_tokens=max_new_tokens,
+                    do_sample=False,
+                    pad_token_id=tokenizer.eos_token_id,
+                    eos_token_id=tokenizer.eos_token_id,
+                )
+        else:
+            generated = model.generate(
+                **encoded,
+                max_new_tokens=max_new_tokens,
+                do_sample=False,
+                pad_token_id=tokenizer.eos_token_id,
+                eos_token_id=tokenizer.eos_token_id,
+            )
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+    elapsed = time.perf_counter() - started
+    input_width = encoded["input_ids"].shape[1]
+    amortized_latency = elapsed / len(questions)
+    results: list[dict] = []
+    for index, (question, gold_answer) in enumerate(zip(questions, gold_answers)):
+        new_ids = generated[index, input_width:]
+        output = tokenizer.decode(new_ids, skip_special_tokens=False)
+        cot = output.split("\n\nThe final answer is:")[0]
+        cot_length = int(tokenizer(cot, return_tensors="pt")["input_ids"].shape[1])
+        prediction = extract_answer(question, output, task="cot")
+        prediction = prediction if isinstance(prediction, str) else ""
+        correct = evaluate_answer(
+            {"prediction": prediction, "answer": gold_answer.replace(",", "")}
+        )
+        results.append(
+            {
+                "ratio": ratio,
+                "output": output,
+                "prediction": prediction,
+                "correct": bool(correct),
+                "generated_tokens": int(new_ids.shape[0]),
+                "reasoning_tokens": cot_length,
+                "latency_s": round(amortized_latency, 4),
+                "batch_latency_s": round(elapsed, 4),
+                "batch_size": len(questions),
+            }
+        )
+    return results
 
 
 def summarize(rows: list[dict], key: str) -> dict:

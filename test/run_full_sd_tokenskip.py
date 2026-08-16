@@ -21,7 +21,7 @@ import torch
 from tokenskip_pilot_core import (
     RATIOS,
     fit_bins,
-    generate_one,
+    generate_batch,
     load_model,
     load_official_evaluator,
     model_device,
@@ -46,6 +46,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--n-cal", type=int, default=9)
     parser.add_argument("--n-eval", type=int, default=1319)
     parser.add_argument("--max-new-tokens", type=int, default=512)
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=1,
+        help="Requested inference batch size; halves automatically after CUDA OOM.",
+    )
     return parser.parse_args()
 
 
@@ -79,36 +85,86 @@ def apply_locked_policy(row: dict) -> None:
     row["sd_tokenskip"]["policy_bin"] = row["difficulty_bin"]
 
 
-def generate_row(
+def generate_rows_chunk(
     model,
     tokenizer,
-    row: dict,
+    rows: list[dict],
     max_new_tokens: int,
     extract_answer,
     evaluate_answer,
-) -> dict:
-    row["full"] = generate_one(
-        model,
-        tokenizer,
-        row["question"],
-        1.0,
-        max_new_tokens,
-        extract_answer,
-        evaluate_answer,
-        row["answer"],
-    )
-    for ratio in RATIOS:
-        row[f"ratio_{ratio:.1f}"] = generate_one(
+) -> list[dict]:
+    updated_rows = [dict(row) for row in rows]
+    for ratio in (1.0, *RATIOS):
+        results = generate_batch(
             model,
             tokenizer,
-            row["question"],
+            [row["question"] for row in updated_rows],
             ratio,
             max_new_tokens,
             extract_answer,
             evaluate_answer,
-            row["answer"],
+            [row["answer"] for row in updated_rows],
         )
-    return row
+        key = "full" if ratio >= 1.0 else f"ratio_{ratio:.1f}"
+        for row, result in zip(updated_rows, results):
+            row[key] = result
+    return updated_rows
+
+
+def is_cuda_oom(error: RuntimeError) -> bool:
+    return "out of memory" in str(error).lower() and torch.cuda.is_available()
+
+
+def process_pending(
+    model,
+    tokenizer,
+    pending: list[dict],
+    output_path: Path,
+    row_by_id: dict[str, dict],
+    label: str,
+    max_new_tokens: int,
+    requested_batch_size: int,
+    extract_answer,
+    evaluate_answer,
+    apply_policy: bool,
+) -> None:
+    if requested_batch_size < 1:
+        raise ValueError("--batch-size must be at least 1")
+    offset = 0
+    while offset < len(pending):
+        attempt_size = min(requested_batch_size, len(pending) - offset)
+        while True:
+            chunk = pending[offset : offset + attempt_size]
+            try:
+                updated = generate_rows_chunk(
+                    model,
+                    tokenizer,
+                    chunk,
+                    max_new_tokens,
+                    extract_answer,
+                    evaluate_answer,
+                )
+                break
+            except RuntimeError as error:
+                if not is_cuda_oom(error) or attempt_size == 1:
+                    raise
+                next_size = max(1, attempt_size // 2)
+                print(
+                    f"[batch fallback] {label} requested={attempt_size} -> {next_size} after CUDA OOM",
+                    flush=True,
+                )
+                torch.cuda.empty_cache()
+                attempt_size = next_size
+        for row in updated:
+            if apply_policy:
+                apply_locked_policy(row)
+            append_row(output_path, row)
+            row_by_id[row["id"]] = row
+        offset += len(updated)
+        print(
+            f"[{label} {offset}/{len(pending)}] committed batch={len(updated)}",
+            flush=True,
+        )
 
 
 def per_bin_summary(rows: list[dict], key: str) -> dict:
@@ -160,6 +216,7 @@ def main() -> None:
         "difficulty_proxy": "input-only word/number/operator/clause score",
         "thresholds": thresholds,
         "locked_policy": LOCKED_POLICY,
+        "batch_size_requested": args.batch_size,
         "resume_files": [str(cal_path), str(eval_path)],
         "caveat": (
             "Full GSM8K test split is evaluated, but this run uses 4-bit local "
@@ -190,26 +247,32 @@ def main() -> None:
     model, tokenizer = load_model(args.base_model, args.adapter_path)
     print(f"Loaded on {model_device(model)}", flush=True)
 
-    for index, row in enumerate(calibration, 1):
-        if "full" in row:
-            continue
-        print(f"[cal {index}/{len(calibration)}] {row['id']} ({row['difficulty_bin']})", flush=True)
-        row = generate_row(
-            model, tokenizer, row, args.max_new_tokens, extract_answer, evaluate_answer
-        )
-        append_row(cal_path, row)
-        calibration_by_id[row["id"]] = row
-
-    for index, row in enumerate(evaluation, 1):
-        if "full" in row:
-            continue
-        print(f"[eval {index}/{len(evaluation)}] {row['id']} ({row['difficulty_bin']})", flush=True)
-        row = generate_row(
-            model, tokenizer, row, args.max_new_tokens, extract_answer, evaluate_answer
-        )
-        apply_locked_policy(row)
-        append_row(eval_path, row)
-        evaluation_by_id[row["id"]] = row
+    process_pending(
+        model,
+        tokenizer,
+        pending_cal,
+        cal_path,
+        calibration_by_id,
+        "cal",
+        args.max_new_tokens,
+        args.batch_size,
+        extract_answer,
+        evaluate_answer,
+        apply_policy=False,
+    )
+    process_pending(
+        model,
+        tokenizer,
+        pending_eval,
+        eval_path,
+        evaluation_by_id,
+        "eval",
+        args.max_new_tokens,
+        args.batch_size,
+        extract_answer,
+        evaluate_answer,
+        apply_policy=True,
+    )
 
     evaluation = [evaluation_by_id[row["id"]] for row in read_jsonl(args.eval_data, args.n_eval)]
     for row in evaluation:
