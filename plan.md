@@ -45,18 +45,19 @@ Kế hoạch hiện tại dành cho chủ đề **Adaptive Compression of Chain-
 - Đã tạo `test/comparison_3b_7b.json` và script kiểm tra `test/summarize_sd_runs.py`. Chẩn đoán theo ví dụ `20%` token và tối đa `2` điểm accuracy loss: multi-level 3B **chưa đạt** (`16.272983%`, `3.1842` điểm). Gate trước đó đạt mất `1.8953` điểm nhưng chỉ giảm `11.42989%` token; đây là trade-off tốt hơn về accuracy nhưng vẫn chưa đạt mức giảm token 20%.
 - Kết luận dừng của đợt này: SD-TokenSkip hiện chưa chứng minh được là phương pháp tốt hơn Full-CoT theo cả accuracy và token. Không chỉnh test set, không đổi model/dataset/precision để làm đẹp kết quả; cần báo cáo negative result và xin thầy duyệt hướng tiếp theo.
 
-### Hiệu chỉnh protocol so sánh cố định và run 7B bắt buộc ngày 2026-08-17
+### Lựa chọn 2: protocol bốn run cho mỗi model ngày 2026-08-17
 
-- **TokenSkip fixed-ratio baseline** phải chạy riêng trên toàn bộ test split cho các ratio `0.5/0.6/0.7/0.8/0.9` và Full-CoT/original control `1.0`, áp dụng cho cả Qwen2.5-3B và Qwen2.5-7B. Mỗi ratio là một điều kiện thực nghiệm độc lập; không gọi một run Full-CoT là đủ cho bảng TokenSkip.
-- **SD-TokenSkip** sau calibration chỉ chọn một ratio cho mỗi câu test và sinh một lần trên evaluation. Calibration có thể thử nhiều ratio trên tập calibration nhỏ; chi phí đó phải ghi riêng như policy/router overhead. Chạy mọi ratio trên cùng câu test chỉ dùng cho fixed-ratio baseline/ablation, không phải main SD one-pass.
-- Run 7B Full-CoT đã có chỉ là control baseline. Việc bắt buộc tiếp theo là chạy đủ fixed-ratio grid 7B, lưu từng ratio ở thư mục riêng, sau đó mới so sánh 7B SD nếu được thầy duyệt và còn ngân sách.
-- Các kết quả 3B/7B hiện có không bị xóa; chúng được giữ làm baseline tham chiếu và không được gọi là reproduction đầy đủ của bảng paper cho đến khi fixed-ratio grid hoàn tất.
+- Để so sánh gọn và đúng phạm vi đã chọn, mỗi model `Qwen2.5-3B` và `Qwen2.5-7B` chạy đúng **4 điều kiện độc lập**: (1) Full-CoT `γ=1.0`, (2) TokenSkip `γ=0.5`, (3) TokenSkip `γ=0.7`, (4) SD-TokenSkip.
+- Full-CoT là mốc baseline phần cứng; γ=`0.5` là mức nén sâu; γ=`0.7` là mức nén trung gian đại diện; SD là phương pháp đề xuất. Đây là **selected comparison protocol**, không gọi là full sweep mọi ratio trong Table 2.
+- **SD-TokenSkip** sau calibration chỉ chọn một ratio cho mỗi câu test và sinh một lần trên evaluation. Calibration có thể thử nhiều ratio trên tập nhỏ; chi phí phải ghi riêng như policy/router overhead. Chạy mọi ratio trên cùng câu test chỉ dùng cho fixed-ratio baseline/ablation, không phải main SD one-pass.
+- Run 7B Full-CoT đã có chỉ là một trong bốn điều kiện. Việc bắt buộc tiếp theo là chạy 7B γ=`0.5`, 7B γ=`0.7` và 7B SD; 3B cũng phải có đủ bốn điều kiện để so sánh cùng cấu trúc.
+- Các kết quả 3B/7B hiện có không bị xóa; run mới phải dùng thư mục riêng và không trộn với thư mục 4-bit.
 
 ## Thứ tự thực hiện bắt buộc
 
 1. Xin thầy duyệt kết luận và scope trước khi chạy bất kỳ model nào.
 2. Khóa model/tokenizer revision, adapter hash, dataset version/split/hash, prompt, preprocessing, seed, decoding, max tokens, answer extraction, evaluator và môi trường.
-3. Chạy official repository result rồi Full-CoT và fixed-ratio grid `0.5/0.6/0.7/0.8/0.9/1.0` trên cùng split cho từng model; tách `Reported`, `Official`, `Reproduced`.
+3. Chạy official repository result rồi bốn điều kiện đã chọn `Full-CoT/γ0.5/γ0.7/SD` trên cùng split cho từng model; tách `Reported`, `Official`, `Reproduced` và `Extension`.
 4. Tạo difficulty label/calibrator chỉ từ train/validation; xây frontier accuracy–tokens–latency và khóa ratio policy trước test, không dùng test answer.
 5. Đánh giá SD-TokenSkip: difficulty-first, policy khóa `easy→0.5`, `medium/hard→Full-CoT` và sinh một lần; cộng chi phí router/điều tra calibration khi báo cáo end-to-end.
 6. Chạy ablation fixed, difficulty-only, random router, oracle, no-fallback, estimator/calibration và lỗi theo bin.
@@ -70,7 +71,7 @@ Kế hoạch hiện tại dành cho chủ đề **Adaptive Compression of Chain-
 - Model: `Qwen/Qwen2.5-3B-Instruct` + adapter `TokenSkip-Qwen2.5-3B-Instruct-GSM8K` (được repository chính thức liệt kê và phù hợp giới hạn phần cứng hiện tại).
 - Dataset chính: GSM8K, giữ đúng split và format của baseline.
 - Dataset mở rộng: MATH-500 chỉ chạy sau khi baseline chính tái lập ổn định.
-- Baseline tối thiểu: Full-CoT, TokenSkip fixed ratio `0.5/0.6/0.7/0.8/0.9` trên 3B và 7B, fixed token-budget prompting `64/128/192`, SD-TokenSkip, random router và oracle control.
+- Baseline tối thiểu theo Lựa chọn 2: Full-CoT, TokenSkip fixed ratio `0.5` và `0.7` trên cả 3B/7B, SD-TokenSkip, random router và oracle control.
 - Không dùng Qwen2.5-14B làm cấu hình chính vì vượt giới hạn 13B, dù TokenSkip có báo cáo kết quả trên model này.
 
 ## Tiêu chí dừng hoặc đổi hướng
