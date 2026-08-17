@@ -34,6 +34,13 @@
 - So sánh chẩn đoán với ví dụ của thầy (`20%` token, tối đa `2` điểm accuracy loss): multi-level 3B chưa đạt. Gate trước đó có loss `1.8953` điểm nhưng chỉ giảm `11.42989%` token. Kết quả hiện tại là negative/trade-off evidence, không được làm đẹp bằng cách đổi model, dataset, precision hoặc test set.
 - Summary lưu tại `test/comparison_3b_7b.json`; checker là `test/summarize_sd_runs.py`.
 
+## Hiệu chỉnh protocol so sánh 2026-08-17
+
+- TokenSkip gốc không được đại diện chỉ bằng Full-CoT. Fixed-ratio baseline phải chạy độc lập trên toàn bộ 1.319 test rows ở `0.5/0.6/0.7/0.8/0.9` và Full-CoT/original control `1.0`, cho cả 3B và 7B.
+- SD-TokenSkip là one-pass trên evaluation: sau calibration, mỗi câu test được router chọn đúng một ratio rồi sinh một lần. Việc thử nhiều ratio chỉ diễn ra trên calibration hoặc trong fixed-ratio ablation; calibration/router overhead phải báo cáo riêng.
+- Run 7B hiện tại chỉ là Full-CoT control (`91.5845%` accuracy), chưa phải so sánh đầy đủ. Run bắt buộc tiếp theo là fixed-ratio grid 7B, mỗi ratio dùng thư mục output riêng; sau đó mới cân nhắc SD 7B nếu được duyệt.
+- Không xóa các artifact đã có và không trộn fixed-ratio grid mới với thư mục 4-bit `test/full-sd-tokenskip-gsm8k-512/` hoặc các run FP16 cũ.
+
 ## Cách dùng file này khi mở chat mới
 
 Đọc `flag.md` trước để biết trạng thái thật, sau đó đọc `plan.md` để biết các việc sắp làm. `nghien-cuu-de-tai.md` và `mo-ta-chi-tiet-de-tai.md` là tài liệu hiện tại; `bai-bao-chu-de-3.html` là danh mục 50 nguồn; các file có hậu tố `-agent-cu` là lịch sử. Không suy đoán lại đề tài hoặc quay về hướng DevFlow trừ khi có thay đổi mới từ thầy.
@@ -136,8 +143,9 @@ Backend cần có lớp tích hợp AI riêng để phần quản lý dự án, 
 1. Gửi thầy bản tóm tắt chủ đề 3, TokenSkip, Qwen2.5-3B/GSM8K và bảng so sánh fresh baseline/extension; ghi rõ reported result và fresh inference là hai loại bằng chứng khác nhau.
 2. Xin thầy xác nhận baseline duy nhất, ngưỡng accuracy `δ`, difficulty bins, budget compute và việc có chấp nhận extension gate hay không.
 3. Nếu thầy yêu cầu, chạy thêm đúng entrypoint/revision của official repository để hoàn tất audit reproduction; không đổi model, dataset hoặc precision để làm đẹp kết quả.
-4. Sau khi scope được duyệt, thực hiện ablation fixed-ratio/random/oracle và error analysis theo difficulty; nếu không tạo Pareto hợp lệ thì báo cáo kết quả âm.
-5. Nếu SD không được thầy chấp nhận, các hướng thay thế cần xin duyệt trước khi chạy GPU: risk-gated TokenSkip với Full-CoT fallback, verifier/uncertainty-triggered retry, staged budget continuation, và difficulty-to-budget policy học trên calibration có held-out validation. Mỗi hướng phải giữ cùng model/dataset/protocol và báo cáo riêng, không trộn với kết quả SD hiện tại.
+4. Chạy fixed-ratio grid `0.5/0.6/0.7/0.8/0.9/1.0` cho cả 3B và 7B; lưu riêng từng ratio, kiểm tra đủ rows/ID và tính accuracy, reasoning tokens, actual ratio, latency, tokens-per-correct.
+5. Sau khi fixed grid được duyệt, thực hiện ablation SD one-pass/random/oracle và error analysis theo difficulty; nếu không tạo Pareto hợp lệ thì báo cáo kết quả âm.
+6. Nếu SD không được thầy chấp nhận, các hướng thay thế cần xin duyệt trước khi chạy GPU: risk-gated TokenSkip với Full-CoT fallback, verifier/uncertainty-triggered retry, staged budget continuation, và difficulty-to-budget policy học trên calibration có held-out validation. Mỗi hướng phải giữ cùng model/dataset/protocol và báo cáo riêng, không trộn với kết quả SD hiện tại.
 
 ## Quy tắc cập nhật flag
 
@@ -166,6 +174,7 @@ Backend cần có lớp tích hợp AI riêng để phần quản lý dự án, 
 - 2026-08-15: Loại DC-TokenSkip và TS-DC-TokenSkip khỏi active, lưu script/log/JSON tại `test/archive-dc-tokenskip-rejected/` và `test/archive-ts-dc-tokenskip-rejected/`. Chuyển sang SD-TokenSkip với policy khóa trước test `easy→0.5`, `medium/hard→Full-CoT`; pilot fresh 27 câu đạt cùng Full `26/27`, giảm 14.8% reasoning tokens, latency gần tương đương và fixed `0.9` có trade-off khác. Chỉ gọi đây là pilot/empirical policy, chưa gọi reproduced result.
 - 2026-08-17: Hoàn tất fresh FP16 original-ratio baseline và extension gate trên cùng model `Qwen/Qwen2.5-3B-Instruct`, adapter TokenSkip 3B và GSM8K; mỗi run đủ 9 calibration/1.319 evaluation rows, batch 288, không 4-bit. Baseline ratio `0.5` đạt `74.8294%` accuracy và giảm `46.398241%` reasoning tokens so với Full-CoT nhưng mất `8.6429` điểm accuracy; extension gate đạt `81.5770%`, giảm `11.42989%` token và mất `1.8953` điểm. Lưu artifact ở hai thư mục FP16 và push commit `17b7eea`; không gọi đây là paper reported result.
 - 2026-08-17: Hoàn tất multi-level SD-TokenSkip 3B và Full-CoT 7B trên Vast.ai RTX 3090. 3B đủ 1.319 rows, policy calibration chọn `easy→1.0`, `medium→0.5`, `hard→1.0`, giảm `16.272983%` token nhưng mất `3.1842` điểm accuracy so với Full-CoT. 7B Full-CoT đủ 1.319 rows, đạt `91.5845%` accuracy; đây chỉ là fresh baseline cùng GSM8K/model scale, chưa phải 7B SD và không phải paper reported result. Lưu artifacts local và summary `test/comparison_3b_7b.json`.
+- 2026-08-17: Hiệu chỉnh protocol: fixed TokenSkip phải chạy đủ `0.5/0.6/0.7/0.8/0.9/1.0` trên cả 3B và 7B; SD chỉ one-pass trên evaluation sau calibration. Đánh dấu run 7B Full-CoT hiện tại là control chưa đủ fixed-ratio grid; không gọi kết quả hiện tại là reproduction đầy đủ của bảng paper.
 
 ## Kết quả nghiên cứu kỹ thuật 2026-07-27 (hướng sản phẩm cũ, lưu lịch sử)
 
