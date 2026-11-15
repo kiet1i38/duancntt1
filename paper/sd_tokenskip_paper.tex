@@ -22,7 +22,7 @@
 Evaluating SD-TokenSkip Against Fixed Compression Ratios}}
 {Evaluating SD-TokenSkip Against Fixed Compression Ratios}}
 
-\titlerunning{A Matched Evaluation of TokenSkip}
+\titlerunning{Evaluating SD-TokenSkip}
 
 \author{Vu Dinh Hong\inst{1} \and
 Chau Pham Tuan Kiet\inst{2} \and
@@ -57,7 +57,7 @@ Several methods allocate more computation where it is likely to help. Snell et a
 
 \section{Question-based ratio selection}
 \subsection{Frozen SD-TokenSkip policy}
-SD-TokenSkip runs before generation (Fig.~\ref{fig:architecture}). It counts question tokens, numeric spans, arithmetic operators, clause connectors, number--unit pairs, and comparison markers. It standardizes these counts using the fit partition and averages the six standardized values. Fit-set quantiles define ten score bins. Bins 1--5, 6--7, and 8--10 form the \emph{easy}, \emph{medium}, and \emph{hard} groups. These names refer to score bands.
+Selective Difficulty-Conditioned TokenSkip (SD-TokenSkip) runs before generation (Fig.~\ref{fig:architecture}). It counts question tokens, numeric spans, arithmetic operators, clause connectors, number--unit pairs, and comparison markers. It standardizes these counts using the fit partition and averages the six standardized values. Fit-set quantiles define ten score bins. Bins 1--5, 6--7, and 8--10 form the \emph{easy}, \emph{medium}, and \emph{hard} groups. These names refer to score bands, not validated difficulty labels.
 
 \begin{figure}[!htbp]
 \centering
@@ -79,7 +79,7 @@ The original calibration used 540 fit, 180 tuning, and 180 validation questions 
 
 \section{Evaluation}
 \subsection{Matched inference on GSM8K}
-We use Qwen2.5-3B-Instruct and Qwen2.5-7B-Instruct \cite{qwen25} and their corresponding GSM8K TokenSkip adapters \cite{tokenskip}. On one RTX 3090, we generate responses for all 1,319 questions at each of six fixed ratios and with frozen SD, yielding 18,466 recorded generations. All conditions share the model and adapter revisions, prompt template, FP16 precision, SDPA, greedy decoding, batch size 16, seed 42, and a limit of 512 new tokens. The prompt appends the TokenSkip ratio marker below 1.0. At 1.0 it omits the marker while retaining the merged adapter. The original authors \href{https://github.com/hemingkx/TokenSkip/blob/main/assets/Q\%26A.md}{document} using the same delimiter format for Qwen; we have not independently verified the exact gamma-1 training examples. Native EOS termination matched the previous stopping helper in a same-batch pilot of three questions per model.
+We use Qwen2.5-3B-Instruct and Qwen2.5-7B-Instruct \cite{qwen25} and their corresponding GSM8K TokenSkip adapters \cite{tokenskip}. On one RTX 3090, we generate responses for all 1,319 questions at each of six fixed ratios and with frozen SD, yielding 18,466 recorded generations. All conditions share the model and adapter revisions, prompt template, FP16 precision, SDPA, greedy decoding, batch size 16, seed 42, and a limit of 512 new tokens. The prompt appends the TokenSkip ratio marker below 1.0. At 1.0 it omits the marker while retaining the merged adapter. The official \href{https://github.com/hemingkx/TokenSkip/blob/main/get_llamafactory_input.py}{data preparation script} uses the original input unchanged for its 1.0 branch and appends markers for compressed branches. We did not verify the exact training files used to produce each released adapter. Native EOS termination matched the previous stopping helper in a same-batch pilot of three questions per model.
 
 Accuracy uses the archived numeric answer extraction and scoring functions. We tokenize the completion prefix before the literal separator \texttt{The final answer is:} preceded by two line breaks. If that separator is absent, the full completion is counted. We keep each output, score, and token count indexed by question. We use a paired question bootstrap with 20,000 resamples for differences and an exact two-sided McNemar test for accuracy. The two primary comparisons, one per model, use the fixed ratio selected by applying Eq.~\ref{eq:utility} to the original tuning partition. This selects $\gamma=0.5$ for both models. We apply Holm correction to those two tests and report the remaining comparisons as exploratory on a previously inspected public benchmark.
 
@@ -94,31 +94,33 @@ Tables~\ref{tab:matched} and~\ref{tab:matched7} give the complete grids separate
 
 At the development weight $\lambda=0.1$, the paired utility difference SD minus fixed 0.5 is $+4.53$ (95\% interval $[2.36,6.75]$) for 3B and $+1.12$ ($[-0.35,2.63]$) for 7B. Utility summarizes a chosen accuracy--length preference and does not establish a universal trade-off advantage. This is especially important because the comparator is comparatively aggressive and because the benchmark has already been inspected.
 
+Test-set utilities in Tables~\ref{tab:matched} and~\ref{tab:matched7} are descriptive. SD does not have the highest observed utility on either model: fixed 0.9 scores 84.86 versus 84.05 for SD on 3B, and 92.37 versus 91.58 on 7B. These test-inspected comparisons do not replace the tuning-selected primary comparison.
+
 \begin{table}[H]
-\caption{Qwen2.5-3B-Instruct: direct inference on 1,319 questions per condition.}
+\caption{Qwen2.5-3B-Instruct: direct inference on 1,319 questions per condition; $U$ uses $\lambda=0.1$ and fixed 1.0 as the length reference.}
 \label{tab:matched}
 \centering\small
-\begin{tabular}{lrrr}
+\begin{tabular}{l@{\hspace{8pt}}r@{\hspace{8pt}}r@{\hspace{8pt}}r@{\hspace{8pt}}r}
 \toprule
-Condition & Correct & Accuracy (\%) & Mean CoT tokens\\
+Condition & Correct & Acc. (\%) & CoT tokens & $U$\\
 \midrule
 \input{figures/matched_3b_rows.tex}
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
-\caption{Qwen2.5-7B-Instruct: direct inference on 1,319 questions per condition.}
+\caption{Qwen2.5-7B-Instruct: direct inference on 1,319 questions per condition; $U$ uses $\lambda=0.1$ and fixed 1.0 as the length reference.}
 \label{tab:matched7}
 \centering\small
-\begin{tabular}{lrrr}
+\begin{tabular}{l@{\hspace{8pt}}r@{\hspace{8pt}}r@{\hspace{8pt}}r@{\hspace{8pt}}r}
 \toprule
-Condition & Correct & Accuracy (\%) & Mean CoT tokens\\
+Condition & Correct & Acc. (\%) & CoT tokens & $U$\\
 \midrule
 \input{figures/matched_7b_rows.tex}
 \end{tabular}
 \end{table}
 
-Two fixed ratios highlighted in the review of TokenSkip Table~2 \cite{tokenskip}, 0.9 for 3B and 0.7 for 7B, give better observed accuracy and token means than SD in our own run (Fig.~\ref{fig:tradeoff}). Fixed 0.9 answers ten more 3B questions correctly and saves 0.71\% of SD's tokens (95\% interval $[-0.71,2.09]$). Its paired accuracy gain is 0.76 points (95\% interval $[-1.06,2.58]$, McNemar $p=0.456$). Fixed 0.7 answers one more 7B question correctly and saves 6.28\% of SD's tokens (95\% interval $[4.75,7.76]$). Its accuracy gain is 0.08 points ($[-1.29,1.44]$, $p=1.000$). These accuracy intervals allow differences in either direction. We did not specify an equivalence margin.
+Two fixed ratios examined after observing test results, 0.9 for 3B and 0.7 for 7B, give better observed accuracy and token means than SD in our own run (Fig.~\ref{fig:tradeoff}). Fixed 0.9 answers ten more 3B questions correctly and saves 0.71\% of SD's tokens (95\% interval $[-0.71,2.09]$). Its paired accuracy gain is 0.76 points (95\% interval $[-1.06,2.58]$, McNemar $p=0.456$). Fixed 0.7 answers one more 7B question correctly and saves 6.28\% of SD's tokens (95\% interval $[4.75,7.76]$). Its accuracy gain is 0.08 points ($[-1.29,1.44]$, $p=1.000$). These accuracy intervals allow differences in either direction. We did not specify an equivalence margin.
 
 \begin{figure}[!htbp]
 \centering
@@ -166,11 +168,9 @@ For 3B the length-only variant has a higher point utility than the fold-selected
 We inspect a small, predetermined-index subset of disagreement cases rather than selecting only favorable examples. In one 3B case, SD reverses an age relation while fixed 1.0 computes it correctly. In one 7B case, SD treats a restarted download as a continuation and omits the instruction to begin again. In another 7B case, SD computes the relevant profits but reaches the 512-token limit while starting an unfinished boxed answer; the archived extractor returns an empty prediction. These examples illustrate reasoning, termination and extraction issues, but are not a representative error taxonomy or proof that compression alone caused the differences. The complete sample-selection rule and row IDs are included with the analysis.
 
 \subsection{Additional evaluation on SVAMP}
-We evaluated the frozen policies and adapter-enabled fixed ratios 0.5 and 1.0 on 1,000 SVAMP questions at a 512-token limit. For 3B, fixed 1.0 answered 898 correctly with 223.10 mean CoT tokens; fixed 0.5 answered 830 with 107.76 tokens; SD answered 886 with 169.00 tokens. Relative to fixed 1.0, SD changed accuracy by $-1.2$ percentage points (paired bootstrap 95\% interval $[-3.0,0.6]$) and mean length by $-54.10$ tokens ($[-58.19,-50.08]$).
+We evaluated the frozen policies and adapter-enabled fixed ratios 0.5 and 1.0 on 1,000 SVAMP questions \cite{svamp} at a 512-token limit. For 3B, fixed 1.0 answered 898 correctly with 223.10 mean CoT tokens; fixed 0.5 answered 830 with 107.76 tokens; SD answered 886 with 169.00 tokens. Relative to fixed 1.0, SD changed accuracy by $-1.2$ percentage points (paired bootstrap 95\% interval $[-3.0,0.6]$) and mean length by $-54.10$ tokens ($[-58.19,-50.08]$).
 
 For 7B, fixed 1.0 answered 930 correctly with 206.42 mean CoT tokens; fixed 0.5 answered 901 with 100.31 tokens; SD answered 926 with 176.56 tokens. Relative to fixed 1.0, SD changed accuracy by $-0.4$ percentage points ($[-1.8,1.0]$) and mean length by $-29.87$ tokens ($[-33.47,-26.35]$). Relative to fixed 0.5, SD changed accuracy by $+2.5$ points ($[1.1,4.0]$) and length by $+76.25$ tokens ($[72.67,79.81]$). Intervals are paired 95\% percentile bootstrap intervals with 10,000 resamples. These outcomes describe trade-offs and do not establish equivalence. The frozen policies and evaluator were specified before evaluating SVAMP; possible overlap with model training is unknown.
-
-On GSM8K, a further 3B comparison at caps 512 and 1,024 gave SD accuracy 82.41\% and 83.02\%, respectively, with mean CoT length 264.74 and 266.94 tokens. For 7B the corresponding figures were 89.31\% and 89.76\%, and 230.78 and 232.55 tokens. The paired accuracy change for 7B was $+0.45$ points (95\% interval $[0.15,0.83]$). Outputs were collected across different GPU hosts for parts of these comparisons, so host and cap effects cannot be separated. A short parity pilot cannot establish identical behavior across all questions.
 
 \section{Discussion and conclusion}
 Fixed ratios offer a better observed accuracy--length trade-off than the frozen SD router on both Qwen2.5 adapters. The structural score carries some information about compression loss, but its value varies with ratio. The observed sensitivity to calibration choices limits the case for using the three structural groups to select ratios.
@@ -178,7 +178,7 @@ Fixed ratios offer a better observed accuracy--length trade-off than the frozen 
 The main conclusions concern two adapters on a previously inspected English arithmetic benchmark; the additional SVAMP evaluation includes both models. The 512-token limit clips some completions, including 66 at fixed 1.0 for 3B and 31 for 7B in the main matched runs. The token measure retokenizes the reasoning prefix and may include the answer when the expected separator is absent. In the main SD runs, the complete generated output averages 275.47 tokens for 3B and 242.16 for 7B, compared with 264.40 and 230.90 by the reasoning-prefix measure. Token counts are not a measure of elapsed time. End-to-end runtime also depends on prompt processing, batching, and decoding.
 
 \paragraph{Code and data availability.}
-The \href{https://github.com/kiet1i38/duancntt1}{project repository} contains inference code, frozen policies, environment records, row-level outputs and analysis. The matched-run manifest records hashes for the inputs and outputs. The repository README provides verification commands and describes the additional evaluation.
+The \href{https://github.com/kiet1i38/duancntt1}{project repository} contains inference code, frozen policies, environment records, row-level outputs and analysis. The matched-run manifest records hashes for the inputs and outputs. The repository README provides verification commands and describes the additional evaluation. Fixed-ratio accuracy and token counts on the fit, tuning and validation splits are provided in \texttt{development-fixed-ratios.csv}.
 
 \paragraph{Disclosure of interests and funding.}
 The authors declare no competing interests. This work received no external funding.
@@ -238,14 +238,17 @@ TokenSkip & 0.5 & 86.0 & 151.44 & 0.51\\
 \bibitem{wei2022}
 Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., Chi, E.,
 Le, Q., Zhou, D.: Chain-of-thought prompting elicits reasoning in large
-language models. Advances in Neural Information Processing Systems 35 (2022).
+language models. Advances in Neural Information Processing Systems 35, pp. 24824--24837 (2022).
 \href{https://proceedings.neurips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract.html}{Proceedings article}.
 
 \bibitem{kojima2022}
 Kojima, T., Gu, S.S., Reid, M., Matsuo, Y., Iwasawa, Y.: Large language
 models are zero-shot reasoners. Advances in Neural Information Processing
-Systems 35 (2022).
+Systems 35, pp. 22199--22213 (2022).
 \href{https://proceedings.neurips.cc/paper/2022/hash/8bb0d291acd4acf06ef112099c16f326-Abstract-Conference.html}{Proceedings article}.
+
+\bibitem{svamp}
+Patel, A., Bhattamishra, S., Goyal, N.: Are NLP Models really able to Solve Simple Math Word Problems? In: NAACL-HLT, pp. 2080--2094 (2021). \url{https://doi.org/10.18653/v1/2021.naacl-main.168}
 
 \bibitem{gsm8k}
 Cobbe, K., Kosaraju, V., Bavarian, M., Chen, M., Jun, H., Kaiser, L.,
@@ -277,22 +280,22 @@ Qwen Team et al.: Qwen2.5 Technical Report. \href{https://arxiv.org/abs/2412.151
 Damani, M., Shenfeld, I., Peng, A., Bobu, A., Andreas, J.: Learning How Hard to Think: Input-Adaptive Allocation of LM Computation. ICLR (2025). \url{https://arxiv.org/abs/2410.04707}
 
 \bibitem{snell}
-Snell, C., Lee, J., Xu, K., Kumar, A.: Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters. \href{https://arxiv.org/abs/2408.03314}{arXiv:2408.03314} (2024).
+Snell, C., Lee, J., Xu, K., Kumar, A.: Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters. ICLR (2025). \url{https://arxiv.org/abs/2408.03314}
 
 \bibitem{dast}
-Shen, Y., et al.: DAST: Difficulty-Adaptive Slow-Thinking for Large Reasoning Models. \href{https://arxiv.org/abs/2503.04472}{arXiv:2503.04472} (2025).
+Shen, Y., et al.: DAST: Difficulty-Adaptive Slow-Thinking for Large Reasoning Models. In: EMNLP Industry Track, pp. 2322--2331 (2025). \url{https://aclanthology.org/2025.emnlp-industry.160/}
 
 \bibitem{adacot}
 Lou, C., et al.: AdaCoT: Pareto-Optimal Adaptive Chain-of-Thought Triggering via Reinforcement Learning. \href{https://arxiv.org/abs/2505.11896}{arXiv:2505.11896} (2025).
 
 \bibitem{l1}
-Aggarwal, P., Welleck, S.: L1: Controlling How Long A Reasoning Model Thinks With Reinforcement Learning. \href{https://arxiv.org/abs/2503.04697}{arXiv:2503.04697} (2025).
+Aggarwal, P., Welleck, S.: L1: Controlling How Long A Reasoning Model Thinks With Reinforcement Learning. COLM (2025). \url{https://arxiv.org/abs/2503.04697}
 
 \bibitem{pruner}
 Luo, H., et al.: O1-Pruner: Length-Harmonizing Fine-Tuning for O1-Like Reasoning Pruning. \href{https://arxiv.org/abs/2501.12570}{arXiv:2501.12570} (2025).
 
 \bibitem{c3ot}
-Kang, Y., Sun, X., Chen, L., Zou, W.: C3oT: Generating Shorter Chain-of-Thought without Compromising Effectiveness. \href{https://arxiv.org/abs/2412.11664}{arXiv:2412.11664} (2024).
+Kang, Y., Sun, X., Chen, L., Zou, W.: C3oT: Generating Shorter Chain-of-Thought without Compromising Effectiveness. In: AAAI 39(23), pp. 24312--24320 (2025). \url{https://doi.org/10.1609/aaai.v39i23.34608}
 
 \end{thebibliography}
 
