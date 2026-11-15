@@ -12,8 +12,13 @@ their upstream repositories at the revisions in the manifests.
   manifests, question-level GSM8K outputs and matched-study analysis.
 - `experiments/review-20261113/`: additional evaluation scripts and protocol;
   `output_diagnostics.csv` gives termination and missing-separator counts.
-- `results/additional-3b/`: completed 3B follow-up and paired analysis. The 7B
-  follow-up has not yet been run.
+- `results/additional-3b/`: completed 3B follow-up and paired analysis.
+- `experiments/review-20261113/recovered-20261115/`: 7B follow-up row-level
+  outputs and paired analysis, including GSM8K cap sensitivity and SVAMP.
+  Run `python -B experiments/review-20261113/analyze_7b_archives.py` to
+  recompute the 7B results; install the analysis requirements first.
+  GSM8K conditions used multiple GPU hosts, so host and cap effects may be
+  confounded. SVAMP conditions were run on one host.
 - `sd-tokenskip-cleanroom-v3/` and `sd-tokenskip-utility-router/`: archived
   development inputs and analysis code retained at their original paths.
 - `paper/`: manuscript and figures.
