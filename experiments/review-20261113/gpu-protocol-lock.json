@@ -1,0 +1,35 @@
+{
+  "status": "frozen_before_gpu_inference",
+  "svamp_commit": "78e727689e1c1bebfc4be39c446898e8e10b0518",
+  "models": [
+    "qwen2.5-3b",
+    "qwen2.5-7b"
+  ],
+  "conditions": [
+    "fixed_1.0",
+    "fixed_0.5",
+    "sd_frozen"
+  ],
+  "gsm8k_n": 1319,
+  "gsm8k_caps": [
+    512,
+    1024
+  ],
+  "svamp_n": 1000,
+  "svamp_caps": [
+    512
+  ],
+  "batch_size": 8,
+  "seed": 42,
+  "sha256": {
+    "gpu_runner.py": "a40dcb58c9e18f08624d1238220ec7c874879c791bd75ac3184efcd614ca2fb9",
+    "analyze_gpu.py": "a669af8a21846238ddae2f1066b632cd125845f8c4dd381bd69099243a20c6e6",
+    "setup_gpu.sh": "793b2333322d5e8611197b2fdf6e7e01c41fec395e543cb05c2cfaff2b9c5a75",
+    "run_gpu.sh": "cb0eb2a603dc0b5bcf22d77c610c959c88980ccba94e5406dff09a0af901b032",
+    "svamp-source.json": "5be77703a6d891ae476d7c082787ad361392aa02453b132516cdd5f4e7934e3e",
+    "bundle_manifest.json": "1f7d5834b1f12c0853c225fcb282bb0bd5d8682b3f2314aa126646b118f803ac",
+    "matched_runner.py": "19ea547f338f32109180c71579f9b7cecc3e600ba2ae267b5d10af207a84f603",
+    "archived_routes_3b.jsonl": "1be04e4fc872879ee00439417fbc5c4e1d25889ae50af8711b86c13407c9d869",
+    "archived_routes_7b.jsonl": "0471519df5d30c8d9cd86549b4d974729d99d721285979c53cde42002778bba1"
+  }
+}

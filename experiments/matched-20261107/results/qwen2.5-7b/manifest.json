@@ -1,0 +1,45 @@
+{
+  "contract": {
+    "model": {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "adapter_id": "hemingkx/TokenSkip-Qwen2.5-7B-Instruct-GSM8K",
+      "adapter_revision": "398e5a879964316c367dfde8b376e0daf46a5dbe"
+    },
+    "model_name": "qwen2.5-7b",
+    "dtype": "float16",
+    "seed": 42,
+    "batch_size": 16,
+    "max_new_tokens": 512,
+    "do_sample": false,
+    "attn_implementation": "sdpa",
+    "adapter": "merged once for every condition, including gamma=1.0",
+    "generation_engine": "Transformers native EOS; full decoded prompt removed as in upstream helper",
+    "cot_tokens": "tokenizer(output before final-answer separator), same archived definition",
+    "runner_sha256": "19ea547f338f32109180c71579f9b7cecc3e600ba2ae267b5d10af207a84f603",
+    "bundle_sha256": "1f7d5834b1f12c0853c225fcb282bb0bd5d8682b3f2314aa126646b118f803ac",
+    "policy_sha256": "3c407e53285197f5385dc1cda2711b9ccbc197966e8bd71d8c26b033e2ba445c",
+    "experiment_plan_sha256": "984b298702d36bf4340523659327a4ae76a201f584854ae9a65a5d9c176a3116",
+    "environment": {
+      "python": "3.10.22",
+      "torch": "2.3.0+cu121",
+      "cuda": "12.1",
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "packages": {
+        "transformers": "4.47.0",
+        "peft": "0.14.0",
+        "accelerate": "1.2.1",
+        "numpy": "1.26.4",
+        "sympy": "1.13.3",
+        "regex": "2024.11.6",
+        "tokenizers": "0.21.4",
+        "huggingface-hub": "0.27.1"
+      }
+    }
+  },
+  "contract_sha256": "d5a38d00e97d2a970f762fb8cd76d2f3ca96113b96782296339ce93d4a7cc91a",
+  "started_utc": "2026-11-07T09:29:21.988510+00:00",
+  "last_resume_utc": "2026-11-07T09:29:21.988519+00:00",
+  "status": "complete",
+  "completed_utc": "2026-11-07T11:38:16.576735+00:00"
+}

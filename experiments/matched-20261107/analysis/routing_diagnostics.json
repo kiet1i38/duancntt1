@@ -1,0 +1,87 @@
+{
+  "scope": "Exploratory on reused test grid. Oracle uses labels. Permutation p values are unadjusted and conditional on recorded outputs.",
+  "models": {
+    "qwen2.5-3b": {
+      "risk_auc_for_error_at_1.0": 0.6601911848037646,
+      "risk_auc_for_compression_loss_among_gamma1_correct": {
+        "0.5": 0.6475771338488101,
+        "0.6": 0.6543093845725425,
+        "0.7": 0.6510059755495861,
+        "0.8": 0.6311581063072117,
+        "0.9": 0.6416681683034507
+      },
+      "all_ratio_assignments_shuffled": {
+        "observed_utility": 84.04626558196355,
+        "permutation_mean": 83.24365682718006,
+        "observed_minus_random_mean": 0.8026087547834919,
+        "central_95_percent_of_random_utilities": [
+          82.17656947882278,
+          84.3174114643563
+        ],
+        "upper_tail_mc_p": 0.0694930506949305,
+        "permutations": 10000,
+        "seed": 20261107
+      },
+      "fallback_positions_fixed": {
+        "observed_utility": 84.04626558196355,
+        "permutation_mean": 83.17935448186229,
+        "observed_minus_random_mean": 0.8669111001012624,
+        "central_95_percent_of_random_utilities": [
+          82.1832013623472,
+          84.17197564878455
+        ],
+        "upper_tail_mc_p": 0.044295570442955706,
+        "permutations": 10000,
+        "seed": 20261107
+      },
+      "fallback_count": 87,
+      "oracle": {
+        "accuracy_percent": 92.87338893100834,
+        "mean_cot_tokens": 176.47687642153147,
+        "utility": 97.34196092989623,
+        "utility_minus_best_fixed_on_this_grid": 12.47709169004986
+      }
+    },
+    "qwen2.5-7b": {
+      "risk_auc_for_error_at_1.0": 0.6564325473285011,
+      "risk_auc_for_compression_loss_among_gamma1_correct": {
+        "0.5": 0.5884875155149346,
+        "0.6": 0.616573902288188,
+        "0.7": 0.6693527367506517,
+        "0.8": 0.6268666622419858,
+        "0.9": 0.6145269194010832
+      },
+      "all_ratio_assignments_shuffled": {
+        "observed_utility": 91.57454342502639,
+        "permutation_mean": 91.82924797510545,
+        "observed_minus_random_mean": -0.25470455007905457,
+        "central_95_percent_of_random_utilities": [
+          90.91034091021629,
+          92.74068324106801
+        ],
+        "upper_tail_mc_p": 0.710928907109289,
+        "permutations": 10000,
+        "seed": 20261107
+      },
+      "fallback_positions_fixed": {
+        "observed_utility": 91.57454342502639,
+        "permutation_mean": 91.66687432974868,
+        "observed_minus_random_mean": -0.09233090472228866,
+        "central_95_percent_of_random_utilities": [
+          90.802370614662,
+          92.50483340900433
+        ],
+        "upper_tail_mc_p": 0.5896410358964104,
+        "permutations": 10000,
+        "seed": 20261107
+      },
+      "fallback_count": 87,
+      "oracle": {
+        "accuracy_percent": 96.28506444275968,
+        "mean_cot_tokens": 154.41925701288855,
+        "utility": 101.0662460620157,
+        "utility_minus_best_fixed_on_this_grid": 8.695097265497353
+      }
+    }
+  }
+}

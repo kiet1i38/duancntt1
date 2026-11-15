@@ -1,0 +1,565 @@
+{
+  "scope": "Exploratory analysis; no GPU or new generation. Test results have been previously inspected.",
+  "test": {
+    "qwen2.5-3b": {
+      "auc_compression_loss": [
+        {
+          "gamma": 0.5,
+          "n_baseline_correct": 1097,
+          "loss_events": 173,
+          "no_loss": 924,
+          "auc": 0.6475771338488101,
+          "auc_ci95": [
+            0.6035197510816246,
+            0.6923428144934515
+          ],
+          "bootstrap_draws_valid": 2000
+        },
+        {
+          "gamma": 0.6,
+          "n_baseline_correct": 1097,
+          "loss_events": 152,
+          "no_loss": 945,
+          "auc": 0.6543093845725425,
+          "auc_ci95": [
+            0.6042362090327306,
+            0.7033498964583772
+          ],
+          "bootstrap_draws_valid": 2000
+        },
+        {
+          "gamma": 0.7,
+          "n_baseline_correct": 1097,
+          "loss_events": 111,
+          "no_loss": 986,
+          "auc": 0.6510059755495861,
+          "auc_ci95": [
+            0.5975727665132989,
+            0.702794257584031
+          ],
+          "bootstrap_draws_valid": 2000
+        },
+        {
+          "gamma": 0.8,
+          "n_baseline_correct": 1097,
+          "loss_events": 91,
+          "no_loss": 1006,
+          "auc": 0.6311581063072117,
+          "auc_ci95": [
+            0.5758002037342739,
+            0.6874889399864549
+          ],
+          "bootstrap_draws_valid": 2000
+        },
+        {
+          "gamma": 0.9,
+          "n_baseline_correct": 1097,
+          "loss_events": 88,
+          "no_loss": 1009,
+          "auc": 0.6416681683034507,
+          "auc_ci95": [
+            0.5812547858088017,
+            0.6981444493238609
+          ],
+          "bootstrap_draws_valid": 2000
+        }
+      ],
+      "sd_vs_gamma1_disagreements": 101,
+      "lost": 56,
+      "recovered": 45,
+      "length_stops_among_disagreements": {
+        "sd": 0,
+        "gamma1": 17
+      },
+      "sample_selection": "First three source indices in each disagreement direction; manual content review required",
+      "sample": [
+        {
+          "source_row_index": 21,
+          "direction": "lost_vs_gamma1",
+          "sd_prediction": "2",
+          "baseline_prediction": "14",
+          "answer": "14",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 38,
+          "direction": "lost_vs_gamma1",
+          "sd_prediction": "8",
+          "baseline_prediction": "10",
+          "answer": "10",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 60,
+          "direction": "lost_vs_gamma1",
+          "sd_prediction": "18",
+          "baseline_prediction": "17",
+          "answer": "17",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 5,
+          "direction": "recovered_vs_gamma1",
+          "sd_prediction": "64",
+          "baseline_prediction": "69",
+          "answer": "64",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 30,
+          "direction": "recovered_vs_gamma1",
+          "sd_prediction": "109",
+          "baseline_prediction": "99",
+          "answer": "109",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "length",
+          "sd_separator_present": true,
+          "baseline_separator_present": false
+        },
+        {
+          "source_row_index": 43,
+          "direction": "recovered_vs_gamma1",
+          "sd_prediction": "48",
+          "baseline_prediction": "240",
+          "answer": "48",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        }
+      ]
+    },
+    "qwen2.5-7b": {
+      "auc_compression_loss": [
+        {
+          "gamma": 0.5,
+          "n_baseline_correct": 1211,
+          "loss_events": 113,
+          "no_loss": 1098,
+          "auc": 0.5884875155149346,
+          "auc_ci95": [
+            0.5364353507556608,
+            0.6400752479313687
+          ],
+          "bootstrap_draws_valid": 2000
+        },
+        {
+          "gamma": 0.6,
+          "n_baseline_correct": 1211,
+          "loss_events": 77,
+          "no_loss": 1134,
+          "auc": 0.616573902288188,
+          "auc_ci95": [
+            0.5510778512971847,
+            0.6804244205835492
+          ],
+          "bootstrap_draws_valid": 2000
+        },
+        {
+          "gamma": 0.7,
+          "n_baseline_correct": 1211,
+          "loss_events": 60,
+          "no_loss": 1151,
+          "auc": 0.6693527367506517,
+          "auc_ci95": [
+            0.6001719512422686,
+            0.734185104440921
+          ],
+          "bootstrap_draws_valid": 2000
+        },
+        {
+          "gamma": 0.8,
+          "n_baseline_correct": 1211,
+          "loss_events": 52,
+          "no_loss": 1159,
+          "auc": 0.6268666622419858,
+          "auc_ci95": [
+            0.5549307199631166,
+            0.7002979117636727
+          ],
+          "bootstrap_draws_valid": 2000
+        },
+        {
+          "gamma": 0.9,
+          "n_baseline_correct": 1211,
+          "loss_events": 43,
+          "no_loss": 1168,
+          "auc": 0.6145269194010832,
+          "auc_ci95": [
+            0.5388926140279625,
+            0.6917919641231219
+          ],
+          "bootstrap_draws_valid": 2000
+        }
+      ],
+      "sd_vs_gamma1_disagreements": 84,
+      "lost": 58,
+      "recovered": 26,
+      "length_stops_among_disagreements": {
+        "sd": 6,
+        "gamma1": 5
+      },
+      "sample_selection": "First three source indices in each disagreement direction; manual content review required",
+      "sample": [
+        {
+          "source_row_index": 7,
+          "direction": "lost_vs_gamma1",
+          "sd_prediction": "120",
+          "baseline_prediction": "160",
+          "answer": "160",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 15,
+          "direction": "lost_vs_gamma1",
+          "sd_prediction": "",
+          "baseline_prediction": "125",
+          "answer": "125",
+          "sd_finish_reason": "length",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": false,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 73,
+          "direction": "lost_vs_gamma1",
+          "sd_prediction": "260",
+          "baseline_prediction": "255",
+          "answer": "255",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 21,
+          "direction": "recovered_vs_gamma1",
+          "sd_prediction": "14",
+          "baseline_prediction": "2",
+          "answer": "14",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 125,
+          "direction": "recovered_vs_gamma1",
+          "sd_prediction": "10",
+          "baseline_prediction": "5",
+          "answer": "10",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "eos",
+          "sd_separator_present": true,
+          "baseline_separator_present": true
+        },
+        {
+          "source_row_index": 175,
+          "direction": "recovered_vs_gamma1",
+          "sd_prediction": "15",
+          "baseline_prediction": "3",
+          "answer": "15",
+          "sd_finish_reason": "eos",
+          "baseline_finish_reason": "length",
+          "sd_separator_present": true,
+          "baseline_separator_present": false
+        }
+      ]
+    }
+  },
+  "baseline_stability": {
+    "qwen2.5-3b": {
+      "n_tuning": 180,
+      "bootstrap_draws": 10000,
+      "winner_counts": {
+        "0.5": 5564,
+        "0.6": 256,
+        "0.7": 26,
+        "0.8": 2700,
+        "0.9": 193,
+        "1.0": 1261
+      },
+      "scope": "Resample tuning questions; this does not capture retraining or an independent test."
+    },
+    "qwen2.5-7b": {
+      "n_tuning": 180,
+      "bootstrap_draws": 10000,
+      "winner_counts": {
+        "0.5": 4238,
+        "0.6": 1346,
+        "0.7": 3766,
+        "0.8": 97,
+        "0.9": 499,
+        "1.0": 54
+      },
+      "scope": "Resample tuning questions; this does not capture retraining or an independent test."
+    }
+  },
+  "development_ablation": {
+    "qwen2.5-3b": {
+      "protocol": "5-fold CV on 900 exposed development questions; fit normalization, quantiles, per-group utility and fixed reference within each training fold; same questions across all gamma outputs; no accuracy gate; no-fallback removes envelope checks but keeps the minimum-group-size default",
+      "scope": "Exploratory offline replay; bootstrap conditional on fitted fold policies; not an independent evaluation.",
+      "seed": 20261113,
+      "input_sha256": {
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/fit/routing_assignments.jsonl": "b22416bb7115e62e9b7bc1ab4ce3f78ab471334c7aa4575f1a2e0f949e645b87",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/fit/gamma-0.5/predictions.jsonl": "b4e8e457483e615a764dc494ac49a0a8f0853738df809339ebaff744411a1da0",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/fit/gamma-0.6/predictions.jsonl": "0e0787b1b3620af39d826a382bc098af6aada89e7c10d917bdaf16083c2df69d",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/fit/gamma-0.7/predictions.jsonl": "ae67fd38f35a4bc283f9ca626c962870c53b316bdc3016a154f5e62a50ebd13f",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/fit/gamma-0.8/predictions.jsonl": "934a1a9c6b43ad2ff3813045fe9c12f5b1b3be481eb141046008e616b00664dc",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/fit/gamma-0.9/predictions.jsonl": "af1ff53edd64f8eb6f57539aa9081f4b34cc7782f91485b82f9858b348304a74",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/fit/gamma-1.0/predictions.jsonl": "97ab97216d188442a1772d21f26cd2949c39ec31061707b9d7c9a61ccee5ff81",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/routing_assignments.jsonl": "b8a7a7216553f688952a57523114eb282b05e3b23504c4234360adca1a15e686",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.5/predictions.jsonl": "4636632921824767956cd38ac34c133fb0958fb4a1444b829f264060cdae7222",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.6/predictions.jsonl": "26c355ee11328fcb2d666990402665daa2632e6caa66dcf7a791b70131d3d867",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.7/predictions.jsonl": "eff94e2b635b4255ed8ed374e83c5602de3063c97927b2afded97683f520e4eb",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.8/predictions.jsonl": "21f6b1d919ede97e2cd4c6735f01dd3ef7be30f5bfd65decc11b42ee64d57062",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.9/predictions.jsonl": "19ebcd0a4c7f98f6d85e6f378f662bdf19acd6f01865bf8568d6a5146d1ce031",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-1.0/predictions.jsonl": "d9917332085fc2f5cb3024c518e5bf6abdf8d6fe6da6b64dadc820799a5a8e2c",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/validation/routing_assignments.jsonl": "bf2b0e8dee4ac9379a3283019ae185fc78e91eb2d9dcd381cae700fcbfd878ad",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/validation/gamma-0.5/predictions.jsonl": "f13c2482d453f0ac18fdb4ad5008642075974de33de825e37a6f57f12970e2d6",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/validation/gamma-0.6/predictions.jsonl": "c821773200cc47f3ec4c09d560cf0151bcbbf8ea31f6f3eb5d30a181d1d6bb02",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/validation/gamma-0.7/predictions.jsonl": "1813083b1861b0f28286a880f0e2f175dde5b2043880d438b3ad413a47044a14",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/validation/gamma-0.8/predictions.jsonl": "d2d98fc5b62aa9c15000dfe2ad2b5412058db8854694ef133d795f5f3366b528",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/validation/gamma-0.9/predictions.jsonl": "a7fa23f7240108bdaf8700039ebde356f33a221305f4daeef0eae86a5c927bfa",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/validation/gamma-1.0/predictions.jsonl": "96ef4a19cdb2661a2c8a7071273b7b6cbc2db1ea6b8f15703ed049c131a53c71"
+      },
+      "methods": {
+        "length_only": {
+          "correct": 807,
+          "n": 900,
+          "accuracy_percent": 89.66666666666666,
+          "mean_cot_tokens": 277.92,
+          "delta_utility_vs_fixed": 1.2022052195484279,
+          "delta_utility_ci95": [
+            -0.5089346166265639,
+            2.909555931345092
+          ],
+          "gamma_counts": {
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 245,
+            "0.9": 190,
+            "1.0": 465
+          }
+        },
+        "three_features": {
+          "correct": 787,
+          "n": 900,
+          "accuracy_percent": 87.44444444444444,
+          "mean_cot_tokens": 260.4377777777778,
+          "delta_utility_vs_fixed": -0.4527030004671324,
+          "delta_utility_ci95": [
+            -2.1824840810263137,
+            1.196134636016982
+          ],
+          "gamma_counts": {
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 186,
+            "0.8": 442,
+            "0.9": 41,
+            "1.0": 231
+          }
+        },
+        "six_features": {
+          "correct": 791,
+          "n": 900,
+          "accuracy_percent": 87.8888888888889,
+          "mean_cot_tokens": 268.9688888888889,
+          "delta_utility_vs_fixed": -0.2851008662389558,
+          "delta_utility_ci95": [
+            -1.5469970289389994,
+            0.9740414362051181
+          ],
+          "gamma_counts": {
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 339,
+            "0.8": 138,
+            "0.9": 23,
+            "1.0": 400
+          }
+        },
+        "six_no_fallback": {
+          "correct": 790,
+          "n": 900,
+          "accuracy_percent": 87.77777777777777,
+          "mean_cot_tokens": 254.36888888888888,
+          "delta_utility_vs_fixed": 0.07757129384578534,
+          "delta_utility_ci95": [
+            -1.6559141180684258,
+            1.8046066669390939
+          ],
+          "gamma_counts": {
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 345,
+            "0.8": 273,
+            "0.9": 70,
+            "1.0": 212
+          }
+        },
+        "fold_selected_fixed": {
+          "correct": 798,
+          "n": 900,
+          "accuracy_percent": 88.66666666666667,
+          "mean_cot_tokens": 284.1511111111111,
+          "delta_utility_vs_fixed": 0.0,
+          "delta_utility_ci95": [
+            0.0,
+            0.0
+          ],
+          "gamma_counts": {
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 360,
+            "0.9": 0,
+            "1.0": 540
+          }
+        }
+      }
+    },
+    "qwen2.5-7b": {
+      "protocol": "5-fold CV on 900 exposed development questions; fit normalization, quantiles, per-group utility and fixed reference within each training fold; same questions across all gamma outputs; no accuracy gate; no-fallback removes envelope checks but keeps the minimum-group-size default",
+      "scope": "Exploratory offline replay; bootstrap conditional on fitted fold policies; not an independent evaluation.",
+      "seed": 20261113,
+      "input_sha256": {
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/fit/routing_assignments.jsonl": "b22416bb7115e62e9b7bc1ab4ce3f78ab471334c7aa4575f1a2e0f949e645b87",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/fit/gamma-0.5/predictions.jsonl": "ac03b53dca46ebc04fea65cecd9a0ec02ccd2bfeb0a15e8a3608ab63b1bb0544",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/fit/gamma-0.6/predictions.jsonl": "a756230abcccf3d5a9a051ce55a71ae3132bb18e09db24b2cecd723cec149c8b",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/fit/gamma-0.7/predictions.jsonl": "3de45d72f3268775f66c632eaf343cdc72fd4c025db9ba4961bc7c3f857bf47d",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/fit/gamma-0.8/predictions.jsonl": "b33e110a3a533917bd11aaf483b3fabbe24a966614bfab02942c6784b9e5a1ea",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/fit/gamma-0.9/predictions.jsonl": "adf08d18a32ba021d961f53b748aaab80e05befc4de6092e2bdb2e866c663dff",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/fit/gamma-1.0/predictions.jsonl": "5e5d1d8f92c1042aa987743690d7d47334c3db28277d67f5a5a55bd23ea3d9d2",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/routing_assignments.jsonl": "b8a7a7216553f688952a57523114eb282b05e3b23504c4234360adca1a15e686",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.5/predictions.jsonl": "9279bd9f47d16f5517a9c874d7d4f1a7377f121e6351f7c00fbe40d69ada7988",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.6/predictions.jsonl": "f15cc9b723aaef904185162211bafdce622df112b2f499d5a7b362d3f4a8f798",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.7/predictions.jsonl": "38bb60ea6fb8cc31bf6af87623883bb9707a60df35fb473ed2c43e889d3242ea",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.8/predictions.jsonl": "6e449781776799f15d20bbd6cec32797beff1b2845e7da816484a3e52caa9602",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.9/predictions.jsonl": "1f30a01928f40ec8e483888a47a4839d7758ffd5f2f59293f42979b86138f782",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-1.0/predictions.jsonl": "87b74d5372edc7310ff34a94783fc9e6fd677ad2007e25383347e167337ce28d",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/validation/routing_assignments.jsonl": "bf2b0e8dee4ac9379a3283019ae185fc78e91eb2d9dcd381cae700fcbfd878ad",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/validation/gamma-0.5/predictions.jsonl": "292b512fcde23d220168658c95a190cd8c253728d7f48ca9a1c210f657926cd2",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/validation/gamma-0.6/predictions.jsonl": "745ab38d7a89be1248030043f40b50ed6bdab6aa19b3d1cf584b421f33513255",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/validation/gamma-0.7/predictions.jsonl": "cea5a9389e67ecb2c06feb283d96b46cf536da115d94cdb00bff0ae9d9902687",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/validation/gamma-0.8/predictions.jsonl": "c6727fb00e78aca11e9d437709909916684dba2e59d6cd5ce1ac0706fd3b32e8",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/validation/gamma-0.9/predictions.jsonl": "d9eb4ae16ad7c3a67dbf48121d37c17729680aeee286739eeb7cd7620f6e9901",
+        "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/validation/gamma-1.0/predictions.jsonl": "fe584775bb3afba41255a7a3c7b863a20d8ede16def516b7cf52d6b3e362520c"
+      },
+      "methods": {
+        "length_only": {
+          "correct": 823,
+          "n": 900,
+          "accuracy_percent": 91.44444444444444,
+          "mean_cot_tokens": 196.94444444444446,
+          "delta_utility_vs_fixed": -0.11342325871984353,
+          "delta_utility_ci95": [
+            -1.2809807295427427,
+            1.068789271942356
+          ],
+          "gamma_counts": {
+            "0.5": 77,
+            "0.6": 545,
+            "0.7": 0,
+            "0.8": 93,
+            "0.9": 166,
+            "1.0": 19
+          }
+        },
+        "three_features": {
+          "correct": 824,
+          "n": 900,
+          "accuracy_percent": 91.55555555555556,
+          "mean_cot_tokens": 208.85222222222222,
+          "delta_utility_vs_fixed": -0.41392819283771964,
+          "delta_utility_ci95": [
+            -1.5663506987653182,
+            0.7251870458281481
+          ],
+          "gamma_counts": {
+            "0.5": 65,
+            "0.6": 196,
+            "0.7": 354,
+            "0.8": 140,
+            "0.9": 117,
+            "1.0": 28
+          }
+        },
+        "six_features": {
+          "correct": 825,
+          "n": 900,
+          "accuracy_percent": 91.66666666666666,
+          "mean_cot_tokens": 199.04222222222222,
+          "delta_utility_vs_fixed": 0.03628509829828005,
+          "delta_utility_ci95": [
+            -1.237979072887701,
+            1.2758618703046503
+          ],
+          "gamma_counts": {
+            "0.5": 141,
+            "0.6": 392,
+            "0.7": 108,
+            "0.8": 188,
+            "0.9": 29,
+            "1.0": 42
+          }
+        },
+        "six_no_fallback": {
+          "correct": 819,
+          "n": 900,
+          "accuracy_percent": 91.0,
+          "mean_cot_tokens": 191.2511111111111,
+          "delta_utility_vs_fixed": -0.36106630204892637,
+          "delta_utility_ci95": [
+            -1.46653339171314,
+            0.702774129039857
+          ],
+          "gamma_counts": {
+            "0.5": 141,
+            "0.6": 449,
+            "0.7": 110,
+            "0.8": 171,
+            "0.9": 29,
+            "1.0": 0
+          }
+        },
+        "fold_selected_fixed": {
+          "correct": 821,
+          "n": 900,
+          "accuracy_percent": 91.22222222222223,
+          "mean_cot_tokens": 187.23444444444445,
+          "delta_utility_vs_fixed": 0.0,
+          "delta_utility_ci95": [
+            0.0,
+            0.0
+          ],
+          "gamma_counts": {
+            "0.5": 0,
+            "0.6": 720,
+            "0.7": 0,
+            "0.8": 180,
+            "0.9": 0,
+            "1.0": 0
+          }
+        }
+      }
+    }
+  }
+}

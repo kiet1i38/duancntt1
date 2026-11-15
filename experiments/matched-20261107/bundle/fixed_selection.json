@@ -1,0 +1,150 @@
+{
+  "qwen2.5-3b": {
+    "selected_gamma": 0.5,
+    "selected_on": "existing 180-row tuning split only",
+    "criterion": "max accuracy_percent + 0.1 * token_reduction_percent vs gamma 1; ties accuracy then higher gamma",
+    "accuracy_gate": null,
+    "metrics": [
+      {
+        "gamma": 0.5,
+        "n": 180,
+        "correct": 159,
+        "accuracy_percent": 88.33333333333333,
+        "mean_cot_tokens": 160.9,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.5/predictions.jsonl",
+        "source_sha256": "4636632921824767956cd38ac34c133fb0958fb4a1444b829f264060cdae7222",
+        "token_reduction_percent": 46.6334991708126,
+        "utility": 92.99668325041459
+      },
+      {
+        "gamma": 0.6,
+        "n": 180,
+        "correct": 154,
+        "accuracy_percent": 85.55555555555556,
+        "mean_cot_tokens": 193.8388888888889,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.6/predictions.jsonl",
+        "source_sha256": "26c355ee11328fcb2d666990402665daa2632e6caa66dcf7a791b70131d3d867",
+        "token_reduction_percent": 35.708494564215954,
+        "utility": 89.12640501197716
+      },
+      {
+        "gamma": 0.7,
+        "n": 180,
+        "correct": 154,
+        "accuracy_percent": 85.55555555555556,
+        "mean_cot_tokens": 219.88888888888889,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.7/predictions.jsonl",
+        "source_sha256": "eff94e2b635b4255ed8ed374e83c5602de3063c97927b2afded97683f520e4eb",
+        "token_reduction_percent": 27.068361894232538,
+        "utility": 88.26239174497881
+      },
+      {
+        "gamma": 0.8,
+        "n": 180,
+        "correct": 162,
+        "accuracy_percent": 90.0,
+        "mean_cot_tokens": 240.4111111111111,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.8/predictions.jsonl",
+        "source_sha256": "21f6b1d919ede97e2cd4c6735f01dd3ef7be30f5bfd65decc11b42ee64d57062",
+        "token_reduction_percent": 20.261654689515396,
+        "utility": 92.02616546895155
+      },
+      {
+        "gamma": 0.9,
+        "n": 180,
+        "correct": 160,
+        "accuracy_percent": 88.88888888888889,
+        "mean_cot_tokens": 255.66666666666666,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-0.9/predictions.jsonl",
+        "source_sha256": "19ebcd0a4c7f98f6d85e6f378f662bdf19acd6f01865bf8568d6a5146d1ce031",
+        "token_reduction_percent": 15.201768933112225,
+        "utility": 90.4090657822001
+      },
+      {
+        "gamma": 1.0,
+        "n": 180,
+        "correct": 164,
+        "accuracy_percent": 91.11111111111111,
+        "mean_cot_tokens": 301.5,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-3b/development/tuning/gamma-1.0/predictions.jsonl",
+        "source_sha256": "d9917332085fc2f5cb3024c518e5bf6abdf8d6fe6da6b64dadc820799a5a8e2c",
+        "token_reduction_percent": 0.0,
+        "utility": 91.11111111111111
+      }
+    ]
+  },
+  "qwen2.5-7b": {
+    "selected_gamma": 0.5,
+    "selected_on": "existing 180-row tuning split only",
+    "criterion": "max accuracy_percent + 0.1 * token_reduction_percent vs gamma 1; ties accuracy then higher gamma",
+    "accuracy_gate": null,
+    "metrics": [
+      {
+        "gamma": 0.5,
+        "n": 180,
+        "correct": 166,
+        "accuracy_percent": 92.22222222222223,
+        "mean_cot_tokens": 142.33333333333334,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.5/predictions.jsonl",
+        "source_sha256": "9279bd9f47d16f5517a9c874d7d4f1a7377f121e6351f7c00fbe40d69ada7988",
+        "token_reduction_percent": 49.77553860931956,
+        "utility": 97.19977608315419
+      },
+      {
+        "gamma": 0.6,
+        "n": 180,
+        "correct": 166,
+        "accuracy_percent": 92.22222222222223,
+        "mean_cot_tokens": 171.31666666666666,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.6/predictions.jsonl",
+        "source_sha256": "f15cc9b723aaef904185162211bafdce622df112b2f499d5a7b362d3f4a8f798",
+        "token_reduction_percent": 39.548332712552195,
+        "utility": 96.17705549347745
+      },
+      {
+        "gamma": 0.7,
+        "n": 180,
+        "correct": 170,
+        "accuracy_percent": 94.44444444444444,
+        "mean_cot_tokens": 206.56666666666666,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.7/predictions.jsonl",
+        "source_sha256": "38bb60ea6fb8cc31bf6af87623883bb9707a60df35fb473ed2c43e889d3242ea",
+        "token_reduction_percent": 27.109839054321615,
+        "utility": 97.1554283498766
+      },
+      {
+        "gamma": 0.8,
+        "n": 180,
+        "correct": 168,
+        "accuracy_percent": 93.33333333333333,
+        "mean_cot_tokens": 224.34444444444443,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.8/predictions.jsonl",
+        "source_sha256": "6e449781776799f15d20bbd6cec32797beff1b2845e7da816484a3e52caa9602",
+        "token_reduction_percent": 20.836682284213214,
+        "utility": 95.41700156175465
+      },
+      {
+        "gamma": 0.9,
+        "n": 180,
+        "correct": 170,
+        "accuracy_percent": 94.44444444444444,
+        "mean_cot_tokens": 238.8388888888889,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-0.9/predictions.jsonl",
+        "source_sha256": "1f30a01928f40ec8e483888a47a4839d7758ffd5f2f59293f42979b86138f782",
+        "token_reduction_percent": 15.72209915508419,
+        "utility": 96.01665435995287
+      },
+      {
+        "gamma": 1.0,
+        "n": 180,
+        "correct": 170,
+        "accuracy_percent": 94.44444444444444,
+        "mean_cot_tokens": 283.39444444444445,
+        "source_path": "sd-tokenskip-cleanroom-v3/runs/sd-v2-v3-gamma05-10-20261025/qwen2.5-7b/development/tuning/gamma-1.0/predictions.jsonl",
+        "source_sha256": "87b74d5372edc7310ff34a94783fc9e6fd677ad2007e25383347e167337ce28d",
+        "token_reduction_percent": 0.0,
+        "utility": 94.44444444444444
+      }
+    ]
+  }
+}

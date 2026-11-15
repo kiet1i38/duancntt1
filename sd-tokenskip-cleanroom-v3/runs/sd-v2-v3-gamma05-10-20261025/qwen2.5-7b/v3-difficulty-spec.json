@@ -1,0 +1,134 @@
+{
+  "additional_feature_definitions": {
+    "clause_connector_count": "1 plus count of commas/semicolons/colons and selected clause connectors in the user question",
+    "numeric_unit_pair_count": "count of numeric amounts explicitly paired with a fixed currency, distance, mass, volume, or time unit, percent word, or percent sign",
+    "relation_marker_count": "count of a fixed list of ratio, comparison, remainder, multiplicative, and total markers in the user question"
+  },
+  "additional_feature_names": [
+    "clause_connector_count",
+    "numeric_unit_pair_count",
+    "relation_marker_count"
+  ],
+  "feature_names": [
+    "question_token_count",
+    "numeric_span_count",
+    "operator_count"
+  ],
+  "feature_risk_score": {
+    "feature_names": [
+      "question_token_count",
+      "numeric_span_count",
+      "operator_count",
+      "clause_connector_count",
+      "numeric_unit_pair_count",
+      "relation_marker_count"
+    ],
+    "interpretation": "A lightweight structural feature ablation; not a learned correctness predictor.",
+    "normalization_fit_split": "fit inputs only",
+    "score_decile_thresholds": [
+      -0.6582177922846598,
+      -0.4690318886039682,
+      -0.3486391009121069,
+      -0.2127001246484589,
+      -0.0890922407396332,
+      0.07061640351444332,
+      0.21712643367771942,
+      0.4563938433587565,
+      0.7515573089573765
+    ],
+    "weights": {
+      "clause_connector_count": 0.16666666666666666,
+      "numeric_span_count": 0.16666666666666666,
+      "numeric_unit_pair_count": 0.16666666666666666,
+      "operator_count": 0.16666666666666666,
+      "question_token_count": 0.16666666666666666,
+      "relation_marker_count": 0.16666666666666666
+    }
+  },
+  "fit_means": {
+    "clause_connector_count": 4.451851851851852,
+    "numeric_span_count": 3.303703703703704,
+    "numeric_unit_pair_count": 0.8666666666666667,
+    "operator_count": 0.4703703703703704,
+    "question_token_count": 60.568518518518516,
+    "relation_marker_count": 1.5592592592592593
+  },
+  "fit_stds": {
+    "clause_connector_count": 2.54287244555216,
+    "numeric_span_count": 1.7523490015746337,
+    "numeric_unit_pair_count": 1.1975283186939982,
+    "operator_count": 0.8928999009945959,
+    "question_token_count": 21.021173841083765,
+    "relation_marker_count": 1.2495211702915876
+  },
+  "normalization_fit_split": "fit inputs only",
+  "out_of_fit_feature_envelope": {
+    "bounds_by_feature": {
+      "clause_connector_count": {
+        "lower": 1.0,
+        "upper": 12.0
+      },
+      "numeric_span_count": {
+        "lower": 0.0,
+        "upper": 8.0
+      },
+      "numeric_unit_pair_count": {
+        "lower": 0.0,
+        "upper": 5.0
+      },
+      "operator_count": {
+        "lower": 0.0,
+        "upper": 4.0
+      },
+      "question_token_count": {
+        "lower": 29.0,
+        "upper": 119.61000000000001
+      },
+      "relation_marker_count": {
+        "lower": 0.0,
+        "upper": 5.0
+      }
+    },
+    "bounds_fit_split": "fit inputs only",
+    "fallback_gamma": 1.0,
+    "lower_quantile": 0.01,
+    "upper_quantile": 0.99
+  },
+  "question_only_features": true,
+  "safe_stds": {
+    "clause_connector_count": 2.54287244555216,
+    "numeric_span_count": 1.7523490015746337,
+    "numeric_unit_pair_count": 1.1975283186939982,
+    "operator_count": 0.8928999009945959,
+    "question_token_count": 21.021173841083765,
+    "relation_marker_count": 1.2495211702915876
+  },
+  "score_decile_quantiles": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "score_decile_thresholds": [
+    -0.9530001453828115,
+    -0.7351017367552396,
+    -0.5343365344783045,
+    -0.3069266546276972,
+    -0.07297319759716114,
+    0.09352559197850005,
+    0.33644565573284646,
+    0.652650323543514,
+    1.13621380379602
+  ],
+  "tie_rule": "Assign the lowest decile whose upper score threshold is greater than or equal to the score; scores above q90 use decile 10.",
+  "weights": {
+    "numeric_span_count": 0.2,
+    "operator_count": 0.1,
+    "question_token_count": 0.7
+  }
+}

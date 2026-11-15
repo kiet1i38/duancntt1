@@ -1,0 +1,15 @@
+model,condition,n,length_stops,missing_separator,missing_separator_correct
+qwen2.5-3b,fixed_0.5,1319,15,15,0
+qwen2.5-3b,fixed_0.6,1319,14,13,1
+qwen2.5-3b,fixed_0.7,1319,12,12,0
+qwen2.5-3b,fixed_0.8,1319,16,14,0
+qwen2.5-3b,fixed_0.9,1319,19,18,4
+qwen2.5-3b,fixed_1.0,1319,66,60,14
+qwen2.5-3b,sd_frozen,1319,37,33,8
+qwen2.5-7b,fixed_0.5,1319,9,7,0
+qwen2.5-7b,fixed_0.6,1319,4,4,0
+qwen2.5-7b,fixed_0.7,1319,8,8,1
+qwen2.5-7b,fixed_0.8,1319,13,12,2
+qwen2.5-7b,fixed_0.9,1319,13,13,2
+qwen2.5-7b,fixed_1.0,1319,31,28,6
+qwen2.5-7b,sd_frozen,1319,16,14,1

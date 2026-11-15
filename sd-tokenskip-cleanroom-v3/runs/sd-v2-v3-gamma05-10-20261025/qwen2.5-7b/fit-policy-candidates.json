@@ -1,0 +1,104 @@
+{
+  "fit_optimized_feature_risk_group_with_fallback": {
+    "fallback_policy": {
+      "fallback_groups": [],
+      "fit_envelope_quantiles": [
+        0.01,
+        0.99
+      ],
+      "gamma": 1.0,
+      "minimum_nonfallback_fit_rows_per_group": 30,
+      "trigger": "input feature outside fit q1-q99 envelope or fewer than 30 in-envelope fit rows in the assigned group"
+    },
+    "family_key": "fit_optimized_feature_risk_group_with_fallback",
+    "fit_group_support": {
+      "easy": 265,
+      "hard": 143,
+      "medium": 108
+    },
+    "fit_metrics": {
+      "accuracy_delta_percentage_points": -0.7407407407407334,
+      "baseline_accuracy_percent": 93.88888888888889,
+      "baseline_correct": 507,
+      "baseline_mean_cot_tokens": 293.6240740740741,
+      "candidate_accuracy_percent": 93.14814814814815,
+      "candidate_correct": 503,
+      "candidate_mean_cot_tokens": 232.9425925925926,
+      "cot_token_reduction_percent": 20.666384959352158,
+      "n": 540,
+      "utility": 95.21478664408338
+    },
+    "fit_utility": 95.21478664408338,
+    "gamma_by_group": {
+      "easy": 0.9,
+      "hard": 0.8,
+      "medium": 0.5
+    },
+    "group_assignment_field": "feature_risk_group",
+    "monotonicity_constraint": false,
+    "policy_family": "fit-optimized independent gamma by six-feature risk group with input-only fallback",
+    "uses_all_registered_candidate_gamma_values": true
+  },
+  "fit_optimized_independent": {
+    "fit_objective_component_sum": 83.74114554901274,
+    "gamma_by_score_decile": {
+      "1": 0.5,
+      "10": 0.8,
+      "2": 0.5,
+      "3": 0.5,
+      "4": 0.5,
+      "5": 0.5,
+      "6": 0.7,
+      "7": 0.6,
+      "8": 1.0,
+      "9": 0.8
+    },
+    "policy_family": "fit-optimized independent gamma by score decile within registered bands"
+  },
+  "fit_optimized_nondecreasing": {
+    "fit_objective_component_sum": 83.46118313801861,
+    "gamma_by_score_decile": {
+      "1": 0.5,
+      "10": 1.0,
+      "2": 0.5,
+      "3": 0.5,
+      "4": 0.5,
+      "5": 0.5,
+      "6": 0.6,
+      "7": 0.6,
+      "8": 1.0,
+      "9": 1.0
+    },
+    "policy_family": "fit-optimized nondecreasing gamma by score decile"
+  },
+  "fit_optimized_three_group_all_gammas": {
+    "family_key": "fit_optimized_three_group_all_gammas",
+    "fit_group_support": {
+      "easy": 272,
+      "hard": 162,
+      "medium": 106
+    },
+    "fit_metrics": {
+      "accuracy_delta_percentage_points": -0.3703703703703667,
+      "baseline_accuracy_percent": 93.88888888888889,
+      "baseline_correct": 507,
+      "baseline_mean_cot_tokens": 293.6240740740741,
+      "candidate_accuracy_percent": 93.51851851851852,
+      "candidate_correct": 505,
+      "candidate_mean_cot_tokens": 248.14074074074074,
+      "cot_token_reduction_percent": 15.490328399250753,
+      "n": 540,
+      "utility": 95.0675513584436
+    },
+    "fit_utility": 95.0675513584436,
+    "gamma_by_group": {
+      "easy": 0.7,
+      "hard": 1.0,
+      "medium": 0.9
+    },
+    "group_assignment_field": "difficulty_band",
+    "monotonicity_constraint": false,
+    "policy_family": "fit-optimized independent gamma by easy/medium/hard difficulty group over the registered gamma range",
+    "uses_all_registered_candidate_gamma_values": true
+  }
+}

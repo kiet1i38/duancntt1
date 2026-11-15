@@ -1,0 +1,7 @@
+# Preserve bytes recorded in experiment manifests across platforms.
+experiments/matched-20261107/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+experiments/matched-20261107/bundle/** -whitespace
+experiments/matched-20261107/LICENSE* -whitespace
+experiments/review-20261113/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+results/additional-3b/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+sd-tokenskip-cleanroom-v3/** -text whitespace=trailing-space,space-before-tab,cr-at-eol

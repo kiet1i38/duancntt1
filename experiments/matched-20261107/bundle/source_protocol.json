@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "method_id": "SD-TokenSkip-v3",
+  "decision_status": "Approved by user for this run",
+  "execution_status": "Completed: gamma 0.5-1.0 SD-only inference for the frozen score policy and six-feature risk policy on all 1,319 GSM8K test rows per model; fixed-gamma outputs were not rerun. See the per-model run manifests and analysis tables.",
+  "models": {
+    "qwen2.5-3b": {
+      "model_id": "Qwen/Qwen2.5-3B-Instruct",
+      "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+      "adapter_id": "hemingkx/TokenSkip-Qwen2.5-3B-Instruct-GSM8K",
+      "adapter_revision": "e5d68b17146eff33722874f59d181aadc7428c91"
+    },
+    "qwen2.5-7b": {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "adapter_id": "hemingkx/TokenSkip-Qwen2.5-7B-Instruct-GSM8K",
+      "adapter_revision": "398e5a879964316c367dfde8b376e0daf46a5dbe"
+    }
+  },
+  "protocol": {
+    "dataset": "GSM8K",
+    "training_split": "official GSM8K train",
+    "test_split": "official GSM8K test; reused benchmark",
+    "dtype": "float16",
+    "seed": 42,
+    "decoding": "greedy",
+    "temperature": 0.0,
+    "max_new_tokens": 512,
+    "batch_size": 16,
+    "adapter_enabled_at_all_gamma_values": true,
+    "candidate_gammas": [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+  },
+  "v2_test_continuation": {
+    "rows_per_model": 1319,
+    "one_gamma_per_test_row": true,
+    "one_generation_per_test_row": true,
+    "use_existing_frozen_policy": true,
+    "candidate_gamma_floor": 0.5,
+    "gamma_floor_rule": "Clamp the pre-locked V2 score-to-gamma mapping to the allowed 0.5-1.0 range before inference; preserve and hash the original frozen policy separately.",
+    "fixed_gamma_baseline_generations": 0
+  },
+  "v3_development": {
+    "fit_rows_per_model": 540,
+    "tuning_rows_per_model": 180,
+    "validation_rows_per_model": 180,
+    "fit_includes_prior_sd540_source_rows": true,
+    "fit_includes_v2_calibration_180": true,
+    "reuse_v2_calibration_grid_for_fit_rows_0_to_179": true,
+    "reuse_v1_sd540_outputs": false,
+    "candidate_grid_generations_per_model": 4320,
+    "score_features": {
+      "question_token_count": 0.7,
+      "numeric_span_count": 0.2,
+      "operator_count": 0.1
+    },
+    "score_normalization_and_decile_boundaries_fit_on": "fit inputs only, independently for each model",
+    "difficulty_groups": {
+      "easy": {"score_deciles": [1, 2, 3, 4, 5]},
+      "medium": {"score_deciles": [6, 7]},
+      "hard": {"score_deciles": [8, 9, 10]}
+    },
+    "three_group_policy": {
+      "candidate_gammas_per_group": {
+        "easy": [0.5],
+        "medium": [0.6, 0.7],
+        "hard": [0.8, 0.9, 1.0]
+      },
+      "one_gamma_per_group": true,
+      "group_gammas_may_differ": true,
+      "monotonicity_constraint": false,
+      "gamma_selection": "Select each group's gamma independently from fit outcomes using the registered utility; no accuracy gate."
+    },
+    "feature_risk_policy": {
+      "question_only_features": [
+        "question_token_count",
+        "numeric_span_count",
+        "operator_count",
+        "clause_connector_count",
+        "numeric_unit_pair_count",
+        "relation_marker_count"
+      ],
+      "additional_features_are_deterministic": true,
+      "normalization_and_risk_decile_boundaries_fit_on": "fit inputs only, independently for each model",
+      "risk_score_weights": "equal weight across six standardized input features",
+      "fallback_gamma": 1.0,
+      "fallback_when": [
+        "any input feature is outside its fit q1-q99 envelope",
+        "an assigned group has fewer than 30 in-envelope fit rows"
+      ],
+      "not_a_correctness_predictor": true
+    },
+    "candidate_policy_families": [
+      "fit-optimized nondecreasing gamma by score decile",
+      "fit-optimized independent gamma by score decile within the registered easy/medium/hard bands",
+      "fit-optimized independent gamma by easy/medium/hard difficulty group over gamma 0.5-1.0",
+      "fit-optimized independent gamma by six-feature risk group with input-only fallback"
+    ],
+    "tuning_selection": "Select among all four registered V3 policy families using tuning utility; break ties by higher accuracy, then prefer the three-group policy, the nondecreasing decile policy, the independent decile policy, and the feature-risk fallback policy, then higher gamma values.",
+    "validation_role": "One-time reporting after policy freeze; no policy change or run gate.",
+    "test_policy_selection": "Use the tuning-selected policy frozen before any GSM8K test inference.",
+    "test_routing_contract": "Question-only inputs; exactly one selected gamma and one generation per test row; no test answers, rationales, or correctness for fitting or policy selection."
+  },
+  "utility": {
+    "formula": "U = accuracy_percent + 0.1 * CoT_token_reduction_percent_vs_gamma_1.0",
+    "lambda": 0.1,
+    "interpretation": "A 10 percentage-point CoT-token reduction offsets 1 percentage point of accuracy in the policy-selection ranking.",
+    "use": "Ranking and policy selection only; not a pass/fail threshold or an accuracy gate.",
+    "report_components_separately": true
+  },
+  "evaluation": {
+    "test_rows_per_model": 1319,
+    "paper_original_reference": {
+      "source_file": "sd-tokenskip-cleanroom-v3/analysis/paper_original_tokenskip_qwen25_gsm8k.json",
+      "source_title": "TokenSkip: Controllable Chain-of-Thought Compression in LLMs",
+      "source_table": "Table 2, Appendix B.2",
+      "source_url": "https://aclanthology.org/2025.emnlp-main.165/",
+      "reported_gammas": [1.0, 0.9, 0.8, 0.7, 0.6, 0.5],
+      "include_original_full_cot_row": true,
+      "evidence_label": "Reported result",
+      "row_level_predictions_available": false
+    },
+    "fresh_fixed_gamma_generation_conditions": [],
+    "fixed_gamma_outputs": "Use Paper Original Table 2 aggregate values only; generate no new fixed-gamma baseline outputs.",
+    "comparison": "Report Qwen2.5-3B-Instruct and Qwen2.5-7B-Instruct in separate tables.",
+    "metrics": ["raw correct count", "accuracy percent", "mean CoT tokens", "CoT-token reduction percent"],
+    "confidence_intervals": "95% paired bootstrap for SD-V3 versus SD-V2 using aligned GSM8K test rows. Paper Original aggregate values have no row-level outputs, so do not report paired intervals against them.",
+    "accuracy_thresholds_or_gates": false,
+    "latency_claims": false,
+    "random_router_oracle_other_controls": "Not in this requested run scope."
+  },
+  "generation_budget": {
+    "new_development_grid_generations_both_models": 8640,
+    "new_v2_and_v3_test_generations_both_models": 5276,
+    "new_generations_total": 13916,
+    "existing_v2_fit_grid_reuse_generations": 2160,
+    "fixed_gamma_test_generations_rerun": 0,
+    "retry_allowance": "Only incomplete generation batches may be retried; preserve attempt records."
+  }
+}

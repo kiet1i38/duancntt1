@@ -1,63 +1,72 @@
-# duancntt1 — SD-TokenSkip evaluation
+# SD-TokenSkip: Evaluation of Adaptive Reasoning Compression
 
-Repository này lưu phần chạy thực nghiệm cần thiết cho đề tài Adaptive Compression of Chain-of-Thought.
+This repository contains the manuscript, code, frozen policies and recorded
+predictions for an evaluation of question-conditioned TokenSkip against fixed
+compression ratios. The study uses Qwen2.5-3B-Instruct and Qwen2.5-7B-Instruct
+with their TokenSkip GSM8K adapters. Download model weights and adapters from
+their upstream repositories at the revisions in the manifests.
 
-Hướng dẫn đầy đủ dạng HTML: [HUONG-DAN-CHAY-SD-TOKENSKIP.html](./HUONG-DAN-CHAY-SD-TOKENSKIP.html)
+## Contents
 
-Phương pháp đang chạy là **Selective Difficulty-Conditioned TokenSkip (SD-TokenSkip)** trên:
+- `experiments/matched-20261107/`: inference code, environment, policies,
+  manifests, question-level GSM8K outputs and matched-study analysis.
+- `experiments/review-20261113/`: additional evaluation scripts and protocol;
+  `output_diagnostics.csv` gives termination and missing-separator counts.
+- `results/additional-3b/`: completed 3B follow-up and paired analysis. The 7B
+  follow-up has not yet been run.
+- `sd-tokenskip-cleanroom-v3/` and `sd-tokenskip-utility-router/`: archived
+  development inputs and analysis code retained at their original paths.
+- `paper/`: manuscript and figures.
 
-- Base model: `Qwen/Qwen2.5-3B-Instruct`
-- TokenSkip adapter: `hemingkx/TokenSkip-Qwen2.5-3B-Instruct-GSM8K`
-- Dataset: GSM8K train/test theo dữ liệu chính thức đi kèm TokenSkip
-- Policy đã khóa: `easy -> 0.5`, `medium -> 1.0`, `hard -> 1.0`
-- So sánh: Full-CoT, fixed `0.5/0.7/0.9`, SD-TokenSkip
+To compile the manuscript, obtain `llncs.cls` from the Springer Nature LNCS
+author instructions and place it in `paper/` before running your LaTeX toolchain.
+The class file is not included in this release.
 
-## Chạy tiếp trên máy mới
+Archived experiment directories keep their original names because their hashes
+and source paths are part of the research record.
 
-Clone repository rồi chạy từ thư mục gốc:
+## Verify and analyze the recorded GSM8K results
 
-```powershell
-git clone https://github.com/kiet1i38/duancntt1.git
-cd duancntt1
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+Python 3.10 or later suffices for the integrity check:
+
+```sh
+python experiments/matched-20261107/reproduce.py --verify-only
 ```
 
-Cài PyTorch bản CUDA phù hợp với GPU/driver trước. Môi trường máy cũ đã dùng `torch 2.5.1+cu121`; sau đó cài các thư viện còn lại:
+The verifier checks 46 file hashes and 18,466 question-aligned generations.
+To recompute the analyses and figures:
 
-```powershell
-python -m pip install --upgrade pip
-pip install -r test\requirements-sd-run.txt
+```sh
+python -m pip install -r experiments/matched-20261107/requirements-analysis.txt
+python experiments/matched-20261107/reproduce.py
+python experiments/review-20261113/output_diagnostics.py
 ```
 
-Chạy tiếp phép đo full; runner tự đọc các dòng đã ghi trong `full-sd-tokenskip-gsm8k-512` và bỏ qua chúng:
+For development sensitivity and controlled ablations, install the additional
+packages from `experiments/review-20261113/requirements.txt`, then run
+`python experiments/matched-20261107/analyze_development.py` and
+`python experiments/review-20261113/analyze.py`. These analyses are exploratory.
+`python experiments/review-20261113/fit_stability.py` resamples fit questions
+and refits the six-feature map without reselecting the policy family.
 
-```powershell
-python test\run_full_sd_tokenskip.py `
-  --base-model Qwen/Qwen2.5-3B-Instruct `
-  --adapter-path hemingkx/TokenSkip-Qwen2.5-3B-Instruct-GSM8K `
-  --cal-data test\TokenSkip-official\datasets\gsm8k\train.jsonl `
-  --eval-data test\TokenSkip-official\datasets\gsm8k\test.jsonl `
-  --output-dir test\full-sd-tokenskip-gsm8k-512 `
-  --cal-pool 0 --n-cal 9 --n-eval 1319 --max-new-tokens 512
-```
+See `experiments/matched-20261107/README.md` for the inference environment and
+fresh inference instructions. GPU inference requires the model and adapter
+weights, sufficient GPU memory and compatible software. Write new inference to
+a separate folder so the recorded results remain unchanged.
 
-Model và adapter sẽ được tải từ Hugging Face ở lần chạy đầu; không commit cache model vào Git.
+## Additional evaluation
 
-## Trạng thái đã lưu
+`results/additional-3b/followup-3b-final.tgz` includes 3B question-level outputs
+for GSM8K at caps 512 and 1,024 and SVAMP at cap 512. The paired summary is in
+`full-3b-cap-svamp-paired-analysis.json`. Some GSM8K batches were resumed on
+different RTX 3090 hosts; cap and host effects cannot be fully separated.
+The three SVAMP conditions ran on the same instance. Token counts do not measure
+end-to-end latency.
 
-Snapshot hiện tại đã ghi hoàn chỉnh **8/9 dòng calibration**, chưa có evaluation row nào. Runner có resume theo `id`, nên không cần xóa thư mục output trước khi chạy tiếp.
+## Data and third-party code
 
-`run_meta.json` giữ hash snapshot của máy cũ để truy vết. Khi chạy bằng model ID trên máy mới, runner sẽ ghi lại metadata với đường dẫn mới.
-
-## Phân loại kết quả
-
-Kết quả full split của SD-TokenSkip là đánh giá phương pháp nhóm đề xuất. Không gọi là `Reproduced result` nếu chưa khớp đầy đủ checkpoint, revision, precision, prompt, decoding, evaluator và protocol của bài báo TokenSkip.
-
-## Tài nguyên máy khuyến nghị
-
-- Tối thiểu thực dụng cho runner hiện tại: NVIDIA GPU 8 GB VRAM, RAM 16 GB, SSD trống 30 GB.
-- Khuyến nghị: GPU 12–16 GB VRAM, RAM 32 GB, SSD NVMe trống ít nhất 50 GB.
-- Nếu muốn chạy FP16 hoặc evaluation batch lớn gần protocol vLLM chính thức: GPU 16–24 GB VRAM.
-
-RTX 3060 12 GB là mức tiết kiệm có thể dùng; RTX 4070 12 GB hoặc RTX 4060 Ti 16 GB phù hợp hơn; RTX 3090 24 GB là lựa chọn dư dả nếu ưu tiên chạy nhanh/batch lớn.
+GSM8K and TokenSkip-derived helpers retain their upstream notices in
+`experiments/matched-20261107/LICENSE-GSM8K.txt` and `LICENSE-TokenSkip.txt`.
+The SVAMP upstream MIT license is in `results/additional-3b/LICENSE-SVAMP.txt`.
+Model and adapter licenses are governed by their upstream repositories. No
+project-wide license is asserted for contributions whose licensing is unsettled.

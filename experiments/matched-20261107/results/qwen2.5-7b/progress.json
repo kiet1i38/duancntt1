@@ -1,0 +1,15 @@
+{
+  "utc": "2026-11-07T11:38:16.263104+00:00",
+  "model": "qwen2.5-7b",
+  "counts": {
+    "fixed_1.0": 1319,
+    "sd_frozen": 1319,
+    "fixed_0.7": 1319,
+    "fixed_0.6": 1319,
+    "fixed_0.5": 1319,
+    "fixed_0.9": 1319,
+    "fixed_0.8": 1319
+  },
+  "last_method": "fixed_0.8",
+  "last_generation_seconds": 6.7671044770104345
+}

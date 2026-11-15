@@ -1,7 +1,0 @@
-# Install a CUDA-compatible PyTorch build separately for the new machine.
-transformers==4.47.0
-peft==0.14.0
-accelerate==1.2.1
-bitsandbytes>=0.45.0
-sentencepiece==0.2.0
-regex>=2024.0.0

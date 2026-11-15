@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-07",
+  "objective": "Matched fixed-gamma controls for the unchanged frozen V3 router on reused GSM8K test",
+  "user_spending_cap_usd": 2.0,
+  "gpu": "one RTX 3090 24 GB, cheapest viable offer including storage and bandwidth",
+  "models": ["qwen2.5-3b", "qwen2.5-7b"],
+  "batch_size": 16,
+  "dtype": "float16",
+  "seed": 42,
+  "max_new_tokens": 512,
+  "policy_changes": false,
+  "training": false,
+  "manuscript_changes": false,
+  "method_order": {
+    "qwen2.5-3b": ["fixed_1.0", "sd_frozen", "fixed_0.9", "fixed_0.8", "fixed_0.5", "fixed_0.7", "fixed_0.6"],
+    "qwen2.5-7b": ["fixed_1.0", "sd_frozen", "fixed_0.7", "fixed_0.6", "fixed_0.5", "fixed_0.9", "fixed_0.8"]
+  },
+  "primary_baseline": "fixed 0.5 for each model, selected by archived tuning utility, lambda 0.1",
+  "other_baselines": "Report all six fixed values; no selection of a deployment gamma from test",
+  "statistics": {"paired_bootstrap_resamples": 20000, "seed": 4242, "mcnemar": "exact two-sided", "primary_family_adjustment": "Holm across two model primary accuracy comparisons"},
+  "offline_controls": {"random_histogram_seeds": [4242, 4243, 4244], "fallback_preserving_random": true, "sd_grid_replay": true},
+  "generation_engine": "Transformers native EOS; compare identical-batch output with archived helper in pilot before full inference",
+  "reporting": "New matched protocol, separately from archived GPU runs. No speedup claim from token counts. No original adapter-off Full-CoT claim."
+}
