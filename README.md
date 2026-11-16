@@ -54,6 +54,15 @@ packages from `experiments/review-20261113/requirements.txt`, then run
 `python experiments/review-20261113/fit_stability.py` resamples fit questions
 and refits the six-feature map without reselecting the policy family.
 
+The 900 question IDs, original development splits and five ablation fold
+assignments per model are in `experiments/review-20261113/development-folds.csv`.
+Regenerate them with `python experiments/review-20261113/export_development_folds.py`
+(NumPy and the archived routing assignments are required). Generate paper
+tables with `python paper/figures/build_matched_tables.py`,
+`python paper/figures/build_review_tables.py`, and
+`python paper/figures/build_supplementary_tables.py`; regenerate the main
+trade-off figure with `python paper/figures/draw_matched_tradeoff.py`.
+
 See `experiments/matched-20261107/README.md` for the inference environment and
 fresh inference instructions. GPU inference requires the model and adapter
 weights, sufficient GPU memory and compatible software. Write new inference to
@@ -67,6 +76,9 @@ for GSM8K at caps 512 and 1,024 and SVAMP at cap 512. The paired summary is in
 different RTX 3090 hosts; cap and host effects cannot be fully separated.
 The three SVAMP conditions ran on the same instance. Token counts do not measure
 end-to-end latency.
+
+For both models, the SVAMP follow-up contains exactly three conditions:
+fixed gamma 0.5, fixed gamma 1.0 and SD. It is not a six-gamma SVAMP grid.
 
 ## Data and third-party code
 

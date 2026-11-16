@@ -33,13 +33,12 @@ Nguyen Ba Hung\inst{2}}
 \institute{\textsuperscript{1} Natural Language Processing and Knowledge Discovery Research Group, Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam\\
 \textsuperscript{2} Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam\\
 \emailaddress{vudinhhong@tdtu.edu.vn}, \emailaddress{523k0011@student.tdtu.edu.vn}, \emailaddress{523k0006@student.tdtu.edu.vn}\\
-Corresponding author: \emailaddress{523k0011@student.tdtu.edu.vn} (Chau Pham Tuan Kiet),\\
-\emailaddress{523k0006@student.tdtu.edu.vn} (Nguyen Ba Hung)}
+Corresponding author: \emailaddress{523k0006@student.tdtu.edu.vn} (Nguyen Ba Hung)}
 
 \maketitle
 
 \begin{abstract}
-TokenSkip exposes a control for shortening chain-of-thought traces. We ask whether a question-dependent rule improves the accuracy--length trade-off over a fixed ratio. We evaluate a frozen six-feature router, SD-TokenSkip, and six fixed ratios on the same 1,319 GSM8K questions with Qwen2.5-3B-Instruct and 7B-Instruct. The router reaches 82.34\% accuracy at 264.40 mean reasoning tokens on 3B and 89.39\% at 230.90 tokens on 7B. Fixed ratios 0.9 on 3B and 0.7 on 7B give slightly higher observed accuracy and shorter traces. Paired accuracy intervals contain zero for both comparisons, while fixed 0.7 saves 6.28\% tokens on 7B (95\% interval 4.75--7.76\%). The score's AUROC for compression-induced errors varies from 0.588 to 0.669 on 7B, depending on the ratio. Neither adapter provides evidence of a reliable adaptive advantage.
+TokenSkip exposes a control for shortening chain-of-thought traces. We ask whether a question-dependent rule improves the accuracy--length trade-off over a fixed ratio. We evaluate a frozen six-feature router, SD-TokenSkip, and six fixed ratios on the same 1,319 GSM8K questions with Qwen2.5-3B-Instruct and 7B-Instruct. The tuning-selected primary baseline, $\gamma=0.5$, is the most aggressive tested setting. The router reaches 82.34\% accuracy at 264.40 mean reasoning tokens on 3B and 89.39\% at 230.90 tokens on 7B. Fixed ratios 0.9 on 3B and 0.7 on 7B give slightly higher observed accuracy and shorter traces. Paired accuracy intervals contain zero for both comparisons, while fixed 0.7 saves 6.28\% tokens on 7B (95\% interval 4.75--7.76\%). The score's AUROC for compression-induced errors varies from 0.588 to 0.669 on 7B, depending on the ratio. Neither adapter provides evidence of a reliable adaptive advantage.
 \keywords{Chain-of-thought \and TokenSkip \and adaptive inference \and GSM8K}
 \end{abstract}
 
@@ -178,7 +177,7 @@ Fixed ratios offer a better observed accuracy--length trade-off than the frozen 
 The main conclusions concern two adapters on a previously inspected English arithmetic benchmark; the additional SVAMP evaluation includes both models. The 512-token limit clips some completions, including 66 at fixed 1.0 for 3B and 31 for 7B in the main matched runs. The token measure retokenizes the reasoning prefix and may include the answer when the expected separator is absent. In the main SD runs, the complete generated output averages 275.47 tokens for 3B and 242.16 for 7B, compared with 264.40 and 230.90 by the reasoning-prefix measure. Token counts are not a measure of elapsed time. End-to-end runtime also depends on prompt processing, batching, and decoding.
 
 \paragraph{Code and data availability.}
-The \href{https://github.com/kiet1i38/duancntt1/tree/paper-20261116-audit}{archived project repository} contains inference code, frozen policies, environment records, row-level outputs and analysis. The matched-run manifest records hashes for the inputs and outputs. The repository README provides verification commands and describes the additional evaluation. Fixed-ratio accuracy and token counts on the fit, tuning and validation splits are provided in \texttt{development-fixed-ratios.csv}.
+The \href{https://github.com/kiet1i38/duancntt1/tree/paper-revision-20261116}{archived project repository} contains inference code, frozen policies, environment records, row-level outputs and analysis. The matched-run manifest records hashes for the inputs and outputs. The repository README provides verification commands and describes the additional evaluation. Fixed-ratio accuracy and token counts on the fit, tuning and validation splits are provided in \texttt{development-fixed-ratios.csv}.
 
 \paragraph{Disclosure of interests and funding.}
 The authors declare no competing interests. This work received no external funding.
