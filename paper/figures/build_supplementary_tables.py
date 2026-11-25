@@ -59,8 +59,9 @@ def main():
                 parts.append(f"{group.title()} & {title(method)} & {row['correct']}/{row['n']} & {float(row['mean_cot_tokens']):.2f} & {row['lost_vs_gamma1']}" + r'\\')
         parts += [r'\bottomrule\end{tabular}\end{table}',
             'Lost counts questions correct at fixed 1.0 but incorrect in the listed condition; '
-            'they exclude recovered answers. These labels are structural score bands, not human '
-            'difficulty annotations. The SD condition may choose different ratios within a band '
+            'they exclude recovered answers. '
+            + ('These labels are structural score bands, not human difficulty annotations. ' if size == '3b' else '') +
+            'The SD condition may choose different ratios within a band '
             'because of fallback. The analysis is exploratory on the previously inspected test set.']
     OUT.write_text('\n\n'.join(parts)+'\n', encoding='utf-8')
     print('Wrote', OUT)
