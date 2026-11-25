@@ -1,6 +1,6 @@
 % !TEX root = sd_tokenskip_paper.tex
 % Main paper draft.
-\documentclass[runningheads]{llncs}
+\documentclass[a4paper,runningheads]{llncs}
 
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
@@ -24,15 +24,17 @@ Evaluating SD-TokenSkip Against Fixed Compression Ratios}}
 
 \titlerunning{Evaluating SD-TokenSkip}
 
-\author{Vu Dinh Hong\inst{1} \and
+\author{Dinh-Hong Vu\inst{1} \and
 Chau Pham Tuan Kiet\inst{2} \and
-Nguyen Ba Hung\inst{2}}
+Nguyen Ba Hung\inst{2} \and
+Anh-Cuong~Le\inst{1}}
 
-\authorrunning{Vu Dinh Hong, Chau Pham Tuan Kiet, and Nguyen Ba Hung}
+\authorrunning{Dinh-Hong Vu et al.}
 
 \institute{\textsuperscript{1} Natural Language Processing and Knowledge Discovery Research Group, Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam\\
 \textsuperscript{2} Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam\\
-\emailaddress{vudinhhong@tdtu.edu.vn}, \emailaddress{523k0011@student.tdtu.edu.vn}, \emailaddress{523k0006@student.tdtu.edu.vn}\\
+\emailaddress{vudinhhong@tdtu.edu.vn}, \emailaddress{523k0011@student.tdtu.edu.vn},\\
+\emailaddress{523k0006@student.tdtu.edu.vn}, \emailaddress{leanhcuong@tdtu.edu.vn}\\
 Corresponding author: \emailaddress{523k0011@student.tdtu.edu.vn} (Chau Pham Tuan Kiet),\\
 \emailaddress{523k0006@student.tdtu.edu.vn} (Nguyen Ba Hung)}
 
@@ -90,9 +92,9 @@ To separate difficulty from compression sensitivity, we measure the score's AURO
 
 \section{Results}
 \subsection{Fixed ratios and frozen SD}
-Tables~\ref{tab:matched} and~\ref{tab:matched7} give the complete grids separately. Relative to $\gamma=1.0$, SD uses 17.13\% fewer CoT tokens on 3B and 21.97\% fewer on 7B, with observed accuracy differences of $-0.83$ and $-2.43$ points. Compared with the tuning-selected $\gamma=0.5$, SD gains 7.51 accuracy points on 3B (95\% interval 5.31--9.70) and 3.79 on 7B (2.35--5.31), with Holm-adjusted $p<0.001$ for both. It also uses 55.93\% and 52.08\% more CoT tokens than fixed 0.5, respectively. The outcome at that aggressive setting is one part of the trade-off.
+Tables~\ref{tab:matched} and~\ref{tab:matched7} give the complete grids separately. Relative to $\gamma=1.0$, SD uses 17.13\% fewer CoT tokens on 3B and 21.97\% fewer on 7B, with observed accuracy differences of $-0.83$ and $-2.43$ points. Compared with the tuning-selected $\gamma=0.5$, SD gains 7.51 accuracy points on 3B (95\% interval 5.31--9.70) and 3.79 on 7B (2.35--5.31), with Holm-adjusted $p<0.001$ for both. It also uses 55.93\% and 52.08\% more CoT tokens than fixed 0.5, respectively.
 
-At the development weight $\lambda=0.1$, the paired utility difference SD minus fixed 0.5 is $+4.53$ (95\% interval $[2.36,6.75]$) for 3B and $+1.12$ ($[-0.35,2.63]$) for 7B. Utility summarizes a chosen accuracy--length preference and does not establish a universal trade-off advantage. This is especially important because the comparator is comparatively aggressive and because the benchmark has already been inspected.
+At the development weight $\lambda=0.1$, the paired utility difference SD minus fixed 0.5 is $+4.53$ (95\% interval $[2.36,6.75]$) for 3B and $+1.12$ ($[-0.35,2.63]$) for 7B. Utility reflects one chosen accuracy--length preference; the aggressive comparator and prior inspection of the benchmark limit the interpretation of this gain.
 
 Test-set utilities in Tables~\ref{tab:matched} and~\ref{tab:matched7} are descriptive. SD does not have the highest observed utility on either model: fixed 0.9 scores 84.86 versus 84.05 for SD on 3B, and 92.37 versus 91.58 on 7B. These test-inspected comparisons do not replace the tuning-selected primary comparison.
 
@@ -132,14 +134,14 @@ Two fixed ratios examined after observing test results, 0.9 for 3B and 0.7 for 7
 \subsection{Does the score identify useful ratio changes?}
 With fallback held fixed, SD replay scores 0.87 utility points above the mean shuffle for 3B and 0.09 below it for 7B (unadjusted upper-tail permutation $p=0.044$ and $0.590$). Shuffling the entire histogram gives $p=0.069$ and $0.711$. The results give limited evidence for the 3B assignments and no consistent advantage across models. Batch composition changes between direct SD and grid replay: both have the same correct totals, but correctness changes on ten 3B questions and two 7B questions. The shuffle compares policies within replay.
 
-The six-feature score has AUROC 0.660 and 0.656 for error at $\gamma=1.0$ on 3B and 7B. For compression loss among questions correct at 1.0, AUROC varies across the five lower ratios (0.631--0.654 on 3B and 0.588--0.669 on 7B). In particular, discrimination at the 7B medium group's assigned ratio of 0.5 is weak. On the 294 medium questions, SD reduces accuracy from 270/294 at 1.0 (91.84\%) to 249/294 (84.69\%). It loses 27 previously correct answers and recovers six. At a common 0.5, the fraction of baseline-correct questions lost is 7.33\%, 10.00\%, and 12.32\% in easy, medium, and hard. The medium group's low SD accuracy therefore reflects its assigned ratio as well as the questions in the group. The oracle reaches 92.87\% at 176.48 tokens on 3B and 96.29\% at 154.42 on 7B. These values quantify the room for a selector that can predict which ratio works on each question.
+The six-feature score has AUROC 0.660 and 0.656 for error at $\gamma=1.0$ on 3B and 7B. For compression loss among questions correct at 1.0, AUROC varies across the five lower ratios (0.631--0.654 on 3B and 0.588--0.669 on 7B). In particular, discrimination at the 7B medium group's assigned ratio of 0.5 is weak. On the 294 medium questions, SD reduces accuracy from 270/294 at 1.0 (91.84\%) to 249/294 (84.69\%). It loses 27 previously correct answers and recovers six. At a common 0.5 on 7B, the fraction of baseline-correct questions lost is 7.33\%, 10.00\%, and 12.32\% in easy, medium, and hard; the corresponding 3B rates are 11.15\%, 15.00\%, and 25.34\%. The medium group's low SD accuracy therefore reflects its assigned ratio as well as the questions in the group. The oracle reaches 92.87\% at 176.48 tokens on 3B and 96.29\% at 154.42 on 7B. These values quantify the room for a selector that can predict which ratio works on each question.
 
-For fixed 0.5, among the 1,211 7B questions correct at 1.0, 113 become incorrect; the score's AUROC is 0.588 with a question-bootstrap interval $[0.536,0.640]$. For 3B, 173 of 1,097 baseline-correct questions become incorrect, and AUROC is 0.648 ($[0.604,0.692]$). These exploratory intervals are conditional on the observed outputs; they neither correct for analysis selection nor demonstrate an independently validated router.
+For fixed 0.5, among the 1,211 7B questions correct at 1.0, 113 become incorrect; the score's AUROC is 0.588 with a question-bootstrap interval $[0.536,0.640]$. For 3B, 173 of 1,097 baseline-correct questions become incorrect, and AUROC is 0.648 ($[0.604,0.692]$). These intervals are exploratory, conditional on the observed outputs, and not corrected for analysis selection.
 
 \subsection{Development sensitivity}
 On the original validation split, fixed 0.8 for 3B answers 163/180 questions correctly at 238.33 tokens versus 156/180 at 255.40 for SD. Fixed 0.6 for 7B answers 170/180, the same total as SD, at 173.04 versus 231.81 tokens. These comparisons motivated the matched grid. Refitting the original four candidate families over $\lambda\in\{0,0.025,0.05,0.1,0.15,0.2,0.3,0.5\}$ changes the winning family on both models. On 3B at $\lambda=0.1$, the winning family leads the next by 0.114 utility points: it solves three more tuning questions and uses 46.80 additional tokens per question. Resampling tuning questions with maps held fixed gives a gap interval $[-4.04,4.43]$. The same family ranks first in 30.6\% of those resamples.
 
-The tuning-selected fixed comparator is also sensitive to the 180 questions. Across 10,000 question-bootstrap resamples, 0.5 ranks first in 55.64\% for 3B and 42.38\% for 7B; for 7B, 0.7 ranks first in 37.66\%. These are descriptive selection frequencies for the observed tuning sample, not independent validation or a probability of superiority.
+The tuning-selected fixed comparator is also sensitive to the 180 questions. Across 10,000 question-bootstrap resamples, 0.5 ranks first in 55.64\% for 3B and 42.38\% for 7B; for 7B, 0.7 ranks first in 37.66\%. These frequencies describe the observed tuning sample only.
 
 Resampling the 540 fit questions 5,000 times and refitting the six-feature normalization, group boundaries, envelope and ratio map reproduces the original complete map in 12.34\% of draws for 3B and 4.84\% for 7B. These frequencies describe fit-sample instability within the selected family; they do not reselect the family or assess independent test performance. The fit-derived boundaries yield 270/108/162 questions on fit and 102/21/57 on validation. The split preserves duplicate groups and fills held-out sets in source-index order, without stratifying by score band. Recomputing the saved score assignments reproduced all group labels. The medium validation group is small and sensitive to individual examples; the cause of its imbalance is uncertain.
 
@@ -162,15 +164,15 @@ Variant & Correct/$N$ & Acc. (\%) & Tokens & $\Delta U$ [95\% CI]\\\midrule
 \input{figures/review_7b_rows.tex}
 \end{tabular}\end{table}
 
-For 3B the length-only variant has a higher point utility than the fold-selected fixed reference, but its interval spans zero. For 7B none of the variants shows a clear utility advantage. The comparisons do not establish that adding features improves generalization, and do not validate a newly frozen policy on independent questions.
+For 3B the length-only variant has a higher point utility than the fold-selected fixed reference, but its interval spans zero. For 7B none of the variants shows a clear utility advantage. Adding features does not clearly improve held-out utility in these folds.
 
 \subsection{Illustrative error inspection}
-We inspect a small, predetermined-index subset of disagreement cases rather than selecting only favorable examples. In one 3B case, SD reverses an age relation while fixed 1.0 computes it correctly. In one 7B case, SD treats a restarted download as a continuation and omits the instruction to begin again. In another 7B case, SD computes the relevant profits but reaches the 512-token limit while starting an unfinished boxed answer; the archived extractor returns an empty prediction. These examples illustrate reasoning, termination and extraction issues, but are not a representative error taxonomy or proof that compression alone caused the differences. The complete sample-selection rule and row IDs are included with the analysis.
+We inspect a small, predetermined-index subset of disagreement cases rather than selecting only favorable examples. In one 3B case, SD reverses an age relation while fixed 1.0 computes it correctly. In one 7B case, SD treats a restarted download as a continuation and omits the instruction to begin again. In another 7B case, SD computes the relevant profits but reaches the 512-token limit while starting an unfinished boxed answer; the archived extractor returns an empty prediction. These examples illustrate reasoning, termination and extraction issues; they are not a representative sample or evidence of causation. The complete sample-selection rule and row IDs are included with the analysis.
 
 \subsection{Additional evaluation on SVAMP}
 We evaluated the frozen policies and adapter-enabled fixed ratios 0.5 and 1.0 on 1,000 SVAMP questions \cite{svamp} at a 512-token limit. For 3B, fixed 1.0 answered 898 correctly with 223.10 mean CoT tokens; fixed 0.5 answered 830 with 107.76 tokens; SD answered 886 with 169.00 tokens. Relative to fixed 1.0, SD changed accuracy by $-1.2$ percentage points (paired bootstrap 95\% interval $[-3.0,0.6]$) and mean length by $-54.10$ tokens ($[-58.19,-50.08]$).
 
-For 7B, fixed 1.0 answered 930 correctly with 206.42 mean CoT tokens; fixed 0.5 answered 901 with 100.31 tokens; SD answered 926 with 176.56 tokens. Relative to fixed 1.0, SD changed accuracy by $-0.4$ percentage points ($[-1.8,1.0]$) and mean length by $-29.87$ tokens ($[-33.47,-26.35]$). Relative to fixed 0.5, SD changed accuracy by $+2.5$ points ($[1.1,4.0]$) and length by $+76.25$ tokens ($[72.67,79.81]$). Intervals are paired 95\% percentile bootstrap intervals with 10,000 resamples. These outcomes describe trade-offs and do not establish equivalence. The frozen policies and evaluator were specified before evaluating SVAMP; possible overlap with model training is unknown.
+For 7B, fixed 1.0 answered 930 correctly with 206.42 mean CoT tokens; fixed 0.5 answered 901 with 100.31 tokens; SD answered 926 with 176.56 tokens. Relative to fixed 1.0, SD changed accuracy by $-0.4$ percentage points ($[-1.8,1.0]$) and mean length by $-29.87$ tokens ($[-33.47,-26.35]$). Relative to fixed 0.5, SD changed accuracy by $+2.5$ points ($[1.1,4.0]$) and length by $+76.25$ tokens ($[72.67,79.81]$). Intervals are paired 95\% percentile bootstrap intervals with 10,000 resamples. The frozen policies and evaluator were specified before evaluating SVAMP; possible overlap with model training is unknown.
 
 \section{Discussion and conclusion}
 Fixed ratios offer a better observed accuracy--length trade-off than the frozen SD router on both Qwen2.5 adapters. The structural score carries some information about compression loss, but its value varies with ratio. The observed sensitivity to calibration choices limits the case for using the three structural groups to select ratios.
@@ -178,7 +180,7 @@ Fixed ratios offer a better observed accuracy--length trade-off than the frozen 
 The main conclusions concern two adapters on a previously inspected English arithmetic benchmark; the additional SVAMP evaluation includes both models. The 512-token limit clips some completions, including 66 at fixed 1.0 for 3B and 31 for 7B in the main matched runs. The token measure retokenizes the reasoning prefix and may include the answer when the expected separator is absent. In the main SD runs, the complete generated output averages 275.47 tokens for 3B and 242.16 for 7B, compared with 264.40 and 230.90 by the reasoning-prefix measure. Token counts are not a measure of elapsed time. End-to-end runtime also depends on prompt processing, batching, and decoding.
 
 \paragraph{Code and data availability.}
-The \href{https://github.com/kiet1i38/duancntt1/tree/paper-authors-20261116}{archived project repository} contains inference code, frozen policies, environment records, row-level outputs and analysis. The matched-run manifest records hashes for the inputs and outputs. The repository README provides verification commands and describes the additional evaluation. Fixed-ratio accuracy and token counts on the fit, tuning and validation splits are provided in \texttt{development-fixed-ratios.csv}.
+The archived repository is available at \url{https://github.com/kiet1i38/duancntt1/tree/paper-review-20261125}. It contains inference code, frozen policies, environment records, row-level outputs and analysis. The matched-run manifest records hashes for the inputs and outputs. The repository README provides verification commands and describes the additional evaluation. Fixed-ratio accuracy and token counts on the fit, tuning and validation splits are provided in \texttt{development-fixed-ratios.csv}.
 
 \paragraph{Disclosure of interests and funding.}
 The authors declare no competing interests. This work received no external funding.
@@ -239,13 +241,13 @@ TokenSkip & 0.5 & 86.0 & 151.44 & 0.51\\
 Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., Chi, E.,
 Le, Q., Zhou, D.: Chain-of-thought prompting elicits reasoning in large
 language models. Advances in Neural Information Processing Systems 35, pp. 24824--24837 (2022).
-\href{https://proceedings.neurips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract.html}{Proceedings article}.
+
 
 \bibitem{kojima2022}
 Kojima, T., Gu, S.S., Reid, M., Matsuo, Y., Iwasawa, Y.: Large language
 models are zero-shot reasoners. Advances in Neural Information Processing
 Systems 35, pp. 22199--22213 (2022).
-\href{https://proceedings.neurips.cc/paper/2022/hash/8bb0d291acd4acf06ef112099c16f326-Abstract-Conference.html}{Proceedings article}.
+
 
 \bibitem{svamp}
 Patel, A., Bhattamishra, S., Goyal, N.: Are NLP Models really able to Solve Simple Math Word Problems? In: NAACL-HLT, pp. 2080--2094 (2021). \url{https://doi.org/10.18653/v1/2021.naacl-main.168}
@@ -259,19 +261,19 @@ Training verifiers to solve math word problems. \href{https://arxiv.org/abs/2110
 Xia, H., Leong, C.T., Wang, W., Li, Y., Li, W.: TokenSkip: Controllable
 Chain-of-Thought Compression in LLMs. In: Proceedings of the 2025 Conference
 on Empirical Methods in Natural Language Processing, pp. 3351--3363 (2025).
-\href{https://aclanthology.org/2025.emnlp-main.165/}{ACL Anthology}.
+\url{https://doi.org/10.18653/v1/2025.emnlp-main.165}.
 
 \bibitem{tale}
 Han, T., Wang, Z., Fang, C., Zhao, S., Ma, S., Chen, Z.: Token-Budget-Aware
 LLM Reasoning. In: Findings of the Association for Computational Linguistics:
 ACL 2025, pp. 24842--24855 (2025).
-\href{https://aclanthology.org/2025.findings-acl.1274/}{ACL Anthology}.
+\url{https://doi.org/10.18653/v1/2025.findings-acl.1274}.
 
 \bibitem{cotvalve}
 Ma, X., Wan, G., Yu, R., Fang, G., Wang, X.: CoT-Valve: Length-Compressible
 Chain-of-Thought Tuning. In: Proceedings of the 63rd Annual Meeting of the
 Association for Computational Linguistics, pp. 6025--6035 (2025).
-\href{https://aclanthology.org/2025.acl-long.300/}{ACL Anthology}.
+\url{https://doi.org/10.18653/v1/2025.acl-long.300}.
 
 \bibitem{qwen25}
 Qwen Team et al.: Qwen2.5 Technical Report. \href{https://arxiv.org/abs/2412.15115}{arXiv:2412.15115} (2024).

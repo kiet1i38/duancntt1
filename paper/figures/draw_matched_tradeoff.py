@@ -25,7 +25,7 @@ def main():
             y = [m["accuracy_percent"] for m in fixed]
             ax.plot(x, y, "o-", color="#0072b2", linewidth=1.1, markersize=3.5, label="Fixed ratio")
             for gamma, xt, yt in zip(ratios, x, y):
-                offset = (-18, -10) if model == 'qwen2.5-3b' and gamma == '0.8' else (-5, 5)
+                offset = (5, -13) if model == 'qwen2.5-3b' and gamma == '0.8' else (-5, 5)
                 ax.annotate(gamma, (xt, yt), xytext=offset, textcoords="offset points", fontsize=7)
             sd = metrics["sd_frozen"]
             ax.plot(sd["mean_cot_tokens"], sd["accuracy_percent"], "*", color="#bf4200",
